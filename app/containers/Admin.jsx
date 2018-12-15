@@ -205,21 +205,22 @@ export default class Admin extends Component {
         <form>
           <h1>Uneek Gallery Settings</h1>
           <br/>
+          <p>What would you like the title of the gallery to be?</p>
           <label> 
-          Gallery Title: 
+          Gallery Title: &nbsp;
             <input
               type="title"
               value={this.state.title}
               placeholder="E.g My Posts"
               onChange={this.updateTitleInput}
-            />
+            />&nbsp;
           </label>
 
           <button
             id="save"
             className="button button-primary"
             onClick={this.handleTitleSave}
-          >Save</button>
+          >Save</button>&nbsp;
 
           <button
             id="delete"
@@ -228,22 +229,22 @@ export default class Admin extends Component {
           >Delete</button>
           <br/><br/>
           {/*-------------------------------------------------------------------------------------------------*/}
+          <p>Which category would you like to display on the gallery? You can list multiple categories by seperating the IDs with a comma (E.g "1, 4" would return categories 1 and 4 ).</p>
           <label> 
-
-          Display Category: 
+          Category ID: &nbsp;
             <input
               type="category"
               value={this.state.category}
               placeholder="E.g Posts"
               onChange={this.updateCategoryInput}
-            />
+            />&nbsp;
           </label>
 
           <button
             id="save"
             className="button button-primary"
             onClick={this.handleCategorySave}
-          >Save</button>
+          >Save</button>&nbsp;
 
           <button
             id="delete"
