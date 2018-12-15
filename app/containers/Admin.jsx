@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import fetchWP from '../utils/fetchWP';
+
 import Notice from "../components/Notice/Notice";
 
 export default class Admin extends Component {
   constructor(props) {
     super(props);
 
+    // Set the default states
     this.state = {
       title: '',
       savedTitle: '',
-      notice: false
+      notice: false,
     };
 
     this.fetchWP = new fetchWP({
@@ -19,6 +21,7 @@ export default class Admin extends Component {
       restNonce: this.props.wpObject.api_nonce,
     });
 
+    // Get the currently set title address from our /admin endpoint and update the title state accordingly
     this.getSetting();
   }
 
@@ -37,7 +40,12 @@ export default class Admin extends Component {
     this.fetchWP.post( 'admin', { title: this.state.title } )
     .then(
       (json) => this.processOkResponse(json, 'saved'),
-      (err) => console.log('error', err)
+      (err) => this.setState({
+        notice: {
+          type: 'error',
+          message: err.message, // The error message returned by the REST API
+        }
+      })
     );
   }
 
@@ -54,12 +62,16 @@ export default class Admin extends Component {
       this.setState({
         title: json.value,
         savedTitle: json.value,
+        notice: {
+          type: 'success',
+          message: `Setting ${action} successfully.`,
+        }
       });
     } else {
       this.setState({
         notice: {
           type: 'error',
-          message: `Setting was not ${method}.`,
+          message: `Setting was not ${action}.`,
         }
       });
     }
@@ -73,13 +85,13 @@ export default class Admin extends Component {
 
   handleSave = (event) => {
     event.preventDefault();
-    if (this.state.savedEmail === this.state.email) {
+    if ( this.state.title === this.state.savedTitle ) {
       this.setState({
         notice: {
           type: 'warning',
           message: 'Setting unchanged.',
         }
-      })
+      });
     } else {
       this.updateSetting();
     }
@@ -90,18 +102,31 @@ export default class Admin extends Component {
     this.deleteSetting();
   }
 
+  clearNotice = () => {
+    this.setState({
+      notice: false,
+    });
+  }
+
   render() {
+    let notice;
+    
+    if ( this.state.notice ) {
+      notice = <Notice notice={this.state.notice} onDismissClick={this.clearNotice} />
+    }
+
     return (
       <div className="wrap">
+        {notice}
         <form>
           <h1>Uneek Gallery Settings</h1>
           
-          <label>
+          <label> 
           Gallery Title: 
             <input
-              type="text"
-              placeholder="E.g - My Posts"
+              type="title"
               value={this.state.title}
+              placeholder="E.g My Posts"
               onChange={this.updateInput}
             />
           </label>
@@ -118,19 +143,8 @@ export default class Admin extends Component {
             onClick={this.handleDelete}
           >Delete</button>
         </form>
-
-        <Notice
-        notice={this.state.notice}
-        onDismissClick={this.clearNotice}
-      />
       </div>
     );
-
-    clearNotice = () => {
-      this.setState({
-        notice: false,
-      });
-    }
   }
 }
 

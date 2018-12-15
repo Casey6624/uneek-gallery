@@ -13,10 +13,11 @@ export default class AllPosts extends Component{
         dataFetched: false
     } 
     getPosts = () => {
-        //let fetchURL = this.props.api_url;
-/*         let fetchURLTrimmed = fetchURL.substring(0, fetchURL.indexOf["/v1/"]);
-        let fetchParams = "wp/v2/posts"; */
-        let fetchURL = "http://localhost/testing/wp-json/wp/v2/posts";
+        let api_url = this.props.api_url;
+        let categoryID = '4';
+        let trimmedURL = api_url.split("wp-json")[0];
+        let fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}`;
+        let fetchURL = `${trimmedURL}${fetchParams}`;
         axios.get(fetchURL)
         .then(res => {
             this.setState({
