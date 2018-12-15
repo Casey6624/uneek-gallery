@@ -66,7 +66,6 @@ class Admin {
             array(
                 'methods'               => \WP_REST_Server::READABLE,
                 'callback'              => array( $this, 'get_uneek_title' ),
-                'permission_callback'   => array( $this, 'admin_permissions_check' ),
                 'args'                  => array(),
             ),
         ) );
