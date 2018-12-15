@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AllPosts from "../components/AllPosts/AllPosts";
-import SearchBar from "../components/SearchBar/SearchBar";
+//import SearchBar from "../components/SearchBar/SearchBar";
+import fetchWP from "../utils/fetchWP";
 
 export default class Shortcode extends Component {
 
-  /* constructor(props){
+  constructor(props){
     super(props);
 
     this.fetchWP = new fetchWP({
@@ -13,21 +14,27 @@ export default class Shortcode extends Component {
       restNonce: this.props.wpObject.api_nonce,
     });
 
-    getSetting = () => {
-      this.fetchWP.get("posts")
-      .then(json => console.log(json))
+    this.state = {
+      galleryHeader: null
     }
 
-    getSetting();
-  } */
+    // Get the currently set title address from our /admin endpoint and update the title state accordingly
+    this.getSetting();
+  } 
+
+  getSetting = () => {
+    this.fetchWP.get( 'admin' )
+    .then(
+      (json) => this.setState({galleryHeader: json.value}),
+      (err) => console.log( 'error', err )
+    );
+   console.log(this.props.wpObject) 
+  };
 
   render() {
     return (
       <div>
-        <h1 className="filmListHeader" >UNEEK FILM PRODUCTIONS</h1>
-        <SearchBar 
-        className=""
-        />
+        <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
         <AllPosts 
         api_url={this.props.wpObject.api_url}
         />

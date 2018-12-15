@@ -18,7 +18,7 @@ export default class Admin extends Component {
 
     this.fetchWP = new fetchWP({
       restURL: this.props.wpObject.api_url,
-      restNonce: this.props.wpObject.api_nonce,
+      restNonce: this.props.wpObject.api_nonce
     });
 
     // Get the currently set title address from our /admin endpoint and update the title state accordingly

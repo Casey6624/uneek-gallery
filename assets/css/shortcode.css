@@ -37,9 +37,9 @@
         "filmExcerpt"
         "btnViewFilm";
     }
-    .filmImage, .filmImageHover{
+    .filmImage{
         margin: 0 auto;
-        box-shadow: 1px 1px 1px 1px;
+        box-shadow: 1px 1px !important;
     }
     .filmExcerpt{
         font-size: 22px !important;
@@ -96,7 +96,8 @@ btnViewFilm {
 
 .filmImageHover{
     opacity: 0.8;
-    box-shadow: 1px 1px;
+    margin: 0 auto;
+    box-shadow: 1px 1px 1px 1px;
   }
 
 

@@ -58,7 +58,7 @@ class Admin {
      * Register the routes for the objects of the controller.
      */
     public function register_routes() {
-        $version = '2';
+        $version = '1';
         $namespace = $this->plugin_slug . '/v' . $version;
         $endpoint = "/admin/";
 
@@ -117,16 +117,16 @@ class Admin {
     }
 
     /**
-     * Get Example
+     * Get title
      *
      * @param WP_REST_Request $request Full data about the request.
      * @return WP_Error|WP_REST_Request
      */
     public function get_uneek_title( $request ) {
-        $example_option = get_option( 'uneek-title' );
+        $uneekTitle = get_option( 'uneek-title' );
 
         // Don't return false if there is no option
-        if ( ! $example_option ) {
+        if ( ! $uneekTitle ) {
             return new \WP_REST_Response( array(
                 'success' => true,
                 'value' => ''
@@ -135,12 +135,12 @@ class Admin {
 
         return new \WP_REST_Response( array(
             'success' => true,
-            'value' => $example_option
+            'value' => $uneekTitle
         ), 200 );
     }
 
     /**
-     * Create OR Update Example
+     * Create OR Update title
      *
      * @param WP_REST_Request $request Full data about the request.
      * @return WP_Error|WP_REST_Request
@@ -155,7 +155,7 @@ class Admin {
     }
 
     /**
-     * Delete Example
+     * Delete title
      *
      * @param WP_REST_Request $request Full data about the request.
      * @return WP_Error|WP_REST_Request
