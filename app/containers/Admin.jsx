@@ -13,6 +13,8 @@ export default class Admin extends Component {
     this.state = {
       title: '',
       savedTitle: '',
+      category: '',
+      savedCategory: '',
       notice: false,
     };
 
@@ -22,10 +24,11 @@ export default class Admin extends Component {
     });
 
     // Get the currently set title address from our /admin endpoint and update the title state accordingly
-    this.getSetting();
+    this.getTitleSetting();
+    this.getCategorySetting();
   }
-
-  getSetting = () => {
+  // Title API Calls -----------------------------------------------------------------------------------------------
+  getTitleSetting = () => {
     this.fetchWP.get( 'admin' )
     .then(
       (json) => this.setState({
@@ -36,10 +39,10 @@ export default class Admin extends Component {
     );
   };
 
-  updateSetting = () => {
+  updateTitleSetting = () => {
     this.fetchWP.post( 'admin', { title: this.state.title } )
     .then(
-      (json) => this.processOkResponse(json, 'saved'),
+      (json) => this.processOkTitleResponse(json, 'saved'),
       (err) => this.setState({
         notice: {
           type: 'error',
@@ -49,15 +52,15 @@ export default class Admin extends Component {
     );
   }
 
-  deleteSetting = () => {
+  deleteTitleSetting = () => {
     this.fetchWP.delete( 'admin' )
     .then(
-      (json) => this.processOkResponse(json, 'deleted'),
+      (json) => this.processOkTitleResponse(json, 'deleted'),
       (err) => console.log('error', err)
     );
   }
 
-  processOkResponse = (json, action) => {
+  processOkTitleResponse = (json, action) => {
     if (json.success) {
       this.setState({
         title: json.value,
@@ -77,31 +80,112 @@ export default class Admin extends Component {
     }
   }
 
-  updateInput = (event) => {
+   // Category API Calls -----------------------------------------------------------------------------------------------
+   getCategorySetting = () => {
+    this.fetchWP.get( 'adminCategory' )
+    .then(
+      (json) => this.setState({
+        category: json.value,
+        savedCategory: json.value
+      }),
+      (err) => console.log( 'error', err )
+    );
+  };
+
+  updateCategorySetting = () => {
+    this.fetchWP.post( 'adminCategory', { category: this.state.category } )
+    .then(
+      (json) => this.processOkCategoryResponse(json, 'saved'),
+      (err) => this.setState({
+        notice: {
+          type: 'error',
+          message: err.message, // The error message returned by the REST API
+        }
+      })
+    );
+  }
+
+  deleteCategorySetting = () => {
+    this.fetchWP.delete( 'adminCategory' )
+    .then(
+      (json) => this.processOkCategoryResponse(json, 'deleted'),
+      (err) => console.log('error', err)
+    );
+  }
+
+  processOkCategoryResponse = (json, action) => {
+    if (json.success) {
+      this.setState({
+        category: json.value,
+        savedCategory: json.value,
+        notice: {
+          type: 'success',
+          message: `Setting ${action} successfully.`,
+        }
+      });
+    } else {
+      this.setState({
+        notice: {
+          type: 'error',
+          message: `Setting was not ${action}.`,
+        }
+      });
+    }
+  }
+
+  // Title Handlers -----------------------------------------------------------------------------------
+  updateTitleInput = (event) => {
     this.setState({
       title: event.target.value,
     });
   }
 
-  handleSave = (event) => {
+  handleTitleSave = (event) => {
     event.preventDefault();
     if ( this.state.title === this.state.savedTitle ) {
       this.setState({
         notice: {
           type: 'warning',
-          message: 'Setting unchanged.',
+          message: 'Setting Unchanged: the title is already set to the inputted value.,'
         }
       });
     } else {
-      this.updateSetting();
+      this.updateTitleSetting();
     }
   }
 
-  handleDelete = (event) => {
+  handleTitleDelete = (event) => {
     event.preventDefault();
-    this.deleteSetting();
+    this.deleteTitleSetting();
   }
 
+  // Category Handlers -------------------------------------------------------------------------------------------
+
+  updateCategoryInput = (event) => {
+    this.setState({
+      category: event.target.value,
+    });
+  }
+
+  handleCategorySave = (event) => {
+    event.preventDefault();
+    if ( this.state.category === this.state.savedCategory ) {
+      this.setState({
+        notice: {
+          type: 'warning',
+          message: 'Setting Unchanged: the category is already set to the inputted value.',
+        }
+      });
+    } else {
+      this.updateCategorySetting();
+    }
+  }
+
+  handleCategoryDelete = (event) => {
+    event.preventDefault();
+    this.deleteCategorySetting();
+  }
+  //------------------------------------------------------------------------------------------------------------------
   clearNotice = () => {
     this.setState({
       notice: false,
@@ -120,27 +204,51 @@ export default class Admin extends Component {
         {notice}
         <form>
           <h1>Uneek Gallery Settings</h1>
-          
+          <br/>
           <label> 
           Gallery Title: 
             <input
               type="title"
               value={this.state.title}
               placeholder="E.g My Posts"
-              onChange={this.updateInput}
+              onChange={this.updateTitleInput}
             />
           </label>
 
           <button
             id="save"
             className="button button-primary"
-            onClick={this.handleSave}
+            onClick={this.handleTitleSave}
           >Save</button>
 
           <button
             id="delete"
             className="button button-primary"
-            onClick={this.handleDelete}
+            onClick={this.handleTitleDelete}
+          >Delete</button>
+          <br/><br/>
+          {/*-------------------------------------------------------------------------------------------------*/}
+          <label> 
+
+          Display Category: 
+            <input
+              type="category"
+              value={this.state.category}
+              placeholder="E.g Posts"
+              onChange={this.updateCategoryInput}
+            />
+          </label>
+
+          <button
+            id="save"
+            className="button button-primary"
+            onClick={this.handleCategorySave}
+          >Save</button>
+
+          <button
+            id="delete"
+            className="button button-primary"
+            onClick={this.handleCategoryDelete}
           >Delete</button>
         </form>
       </div>

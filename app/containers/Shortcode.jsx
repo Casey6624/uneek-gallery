@@ -15,20 +15,32 @@ export default class Shortcode extends Component {
     });
 
     this.state = {
-      galleryHeader: null
+      galleryHeader: null,
+      categoryToRender: null
     }
 
-    // Get the currently set title address from our /admin endpoint and update the title state accordingly
-    this.getSetting();
+    this.getSettingsMaster();
   } 
 
-  getSetting = () => {
+  getSettingsMaster = () => {
+    this.getTitleSetting();
+    this.getCategorySetting();
+  }
+
+  getTitleSetting = () => {
     this.fetchWP.get( 'admin' )
     .then(
       (json) => this.setState({galleryHeader: json.value}),
       (err) => console.log( 'error', err )
     );
-   console.log(this.props.wpObject) 
+  };
+
+  getCategorySetting = () => {
+    this.fetchWP.get( 'adminCategory' )
+    .then(
+      (json) => this.setState({categoryToRender: json.value}),
+      (err) => console.log( 'error', err )
+    );
   };
 
   render() {
@@ -37,6 +49,8 @@ export default class Shortcode extends Component {
         <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
         <AllPosts 
         api_url={this.props.wpObject.api_url}
+        api_nonce={this.props.wpObject.api_nonce}
+        categoryToRender={this.state.categoryToRender}
         />
       </div>
     );

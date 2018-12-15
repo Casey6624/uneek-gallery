@@ -4,3 +4,4 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
   exit();
 
 delete_option( 'uneek-title' );
+delete_option( 'uneek-category' );

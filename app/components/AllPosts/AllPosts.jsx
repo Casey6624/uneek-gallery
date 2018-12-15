@@ -14,7 +14,7 @@ export default class AllPosts extends Component{
     } 
     getPosts = () => {
         let api_url = this.props.api_url;
-        let categoryID = '4';
+        let categoryID = this.props.categoryToRender;
         let trimmedURL = api_url.split("wp-json")[0];
         let fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}`;
         let fetchURL = `${trimmedURL}${fetchParams}`;
@@ -38,9 +38,9 @@ export default class AllPosts extends Component{
       }
 
 render(){
-    if(!this.state.dataFetched){
-        this.getPosts();
 
+    if(!this.state.dataFetched && this.props.categoryToRender !== null){
+        this.getPosts();
         return(
             <div>
                 <Loading />
@@ -48,9 +48,12 @@ render(){
         )
     }
 
-    if(this.state.dataFetched && this.state.postData.length == 0){
+    if(this.state.dataFetched && this.state.postData.length === 0){
         return(
-            <div>No Films Found!</div>
+            <div>
+                <h1 className="noPostsFound">No Posts Found! :(</h1>
+                <p className="noPostsFound">Please visit <strong>Settings/Uneek Gallery</strong> from the dashboard and check the category selected.</p>
+            </div>
         )
     }
 
@@ -68,14 +71,5 @@ render(){
         </div>
     )
 }
-
-/*  <div className="ds-grid">
-        <h1 className="ds-grid-item ds-grid-item1">{this.state.postData[0].title.rendered}</h1>
-        <p className="ds-grid-item ds-grid-item2">{this.stripHTMLExcerpt()}</p>
-        <img className="ds-grid-item ds-grid-item3" src={this.state.postData[0].better_featured_image.source_url} alt={this.state.postData[0].better_featured_image.alt_text}/>
-        <br/>
-        <a href={this.state.postData[0].link}> <Button bsSize="large" bsStyle="default">VIEW FILM</Button> </a>
-    </div> */
-
 
 }

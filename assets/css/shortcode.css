@@ -39,7 +39,6 @@
     }
     .filmImage{
         margin: 0 auto;
-        box-shadow: 1px 1px !important;
     }
     .filmExcerpt{
         font-size: 22px !important;
@@ -141,6 +140,11 @@ btnViewFilm {
     border: 2px solid #333;
     width: 100%;
     visibility: hidden;
+}
+
+.noPostsFound{
+    text-align: center;
+    margin: 0 auto;
 }
 
 

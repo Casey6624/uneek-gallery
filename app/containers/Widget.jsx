@@ -5,7 +5,7 @@ export default class Widget extends Component {
   render() {
     return (
       <div>
-        <h1>WP Reactivate Widget</h1>
+        <h1>Uneek Gallery</h1>
         <p>Title: {this.props.wpObject.title}</p>
       </div>
     );

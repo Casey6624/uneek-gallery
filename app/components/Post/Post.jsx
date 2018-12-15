@@ -31,12 +31,12 @@ class Post extends Component{
     render(){
         return(
             <div className="ds-grid">
-                            <img 
+            <a href={this.props.filmLink}><img 
             className={this.state.imgHover ? "ds-grid-item filmImageHover" : "ds-grid-item filmImage"} 
             src={this.props.filmImage}
             onMouseEnter={this.imgHoverOn}
             onMouseLeave={this.imgHoverOff}
-            />
+            /></a>
             <div className="titleAndDescription">
                 <h1 className="ds-grid-item filmTitle">{this.props.filmTitle}</h1>
                 <p className="ds-grid-item filmExcerpt">{this.props.filmExcerpt}</p>

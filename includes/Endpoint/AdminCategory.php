@@ -6,7 +6,7 @@ use Pangolin\WPR;
 /**
  * @subpackage REST_Controller
  */
-class Admin {
+class AdminCategory {
     /**
 	 * Instance of this class.
 	 *
@@ -60,59 +60,7 @@ class Admin {
     public function register_routes() {
         $version = '1';
         $namespace = $this->plugin_slug . '/v' . $version;
-        $endpoint = "/admin/";
-
-        register_rest_route( $namespace, $endpoint, array(
-            array(
-                'methods'               => \WP_REST_Server::READABLE,
-                'callback'              => array( $this, 'get_uneek_title' ),
-                'permission_callback'   => array( $this, 'admin_permissions_check' ),
-                'args'                  => array(),
-            ),
-        ) );
-
-        register_rest_route( $namespace, $endpoint, array(
-            array(
-                'methods'               => \WP_REST_Server::CREATABLE,
-                'callback'              => array( $this, 'update_uneek_title' ),
-                'permission_callback'   => array( $this, 'admin_permissions_check' ),
-                'args'                  => array(
-                    'title' => array(
-                        'required' => true, // means that this parameter must be passed (whatever its value) in order for the request to succeed
-                        'type' => 'string',
-                        'description' => 'Desired title (Appears above the rendered projects).',
-                        'format' => 'text', // we set the format in order to take advantage of built-in email field validation
-                        'validate_callback' => function( $param, $request, $key ) { return ! empty( $param ); } // prevent submission of empty field
-                    )
-                ),
-            ),
-        ) );
-
-        register_rest_route( $namespace, $endpoint, array(
-            array(
-                'methods'               => \WP_REST_Server::EDITABLE,
-                'callback'              => array( $this, 'update_uneek_title' ),
-                'permission_callback'   => array( $this, 'admin_permissions_check' ),
-                'args'                  => array(
-                    'title' => array(
-                        'required' => true, // means that this parameter must be passed (whatever its value) in order for the request to succeed
-                        'type' => 'string',
-                        'description' => 'Desired title (Appears above the rendered projects).',
-                        'format' => 'text', // we set the format in order to take advantage of built-in email field validation
-                        'validate_callback' => function( $param, $request, $key ) { return ! empty( $param ); } // prevent submission of empty field
-                    )
-                ),
-            ),
-        ) );
-
-        register_rest_route( $namespace, $endpoint, array(
-            array(
-                'methods'               => \WP_REST_Server::DELETABLE,
-                'callback'              => array( $this, 'delete_uneek_title' ),
-                'permission_callback'   => array( $this, 'admin_permissions_check' ),
-                'args'                  => array(),
-            ),
-        ) );
+        $endpoint = "/adminCategory/";
 
         // CATEGORY REST ROUTE ----------------------------------------------------------------------------------------------------------------------
 
@@ -171,29 +119,6 @@ class Admin {
 
     }
 
-    /**
-     * Get title
-     *
-     * @param WP_REST_Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Request
-     */
-    public function get_uneek_title( $request ) {
-        $uneekTitle = get_option( 'uneek-title' );
-
-        // Don't return false if there is no option
-        if ( ! $uneekTitle ) {
-            return new \WP_REST_Response( array(
-                'success' => true,
-                'value' => ''
-            ), 200 );
-        }
-
-        return new \WP_REST_Response( array(
-            'success' => true,
-            'value' => $uneekTitle
-        ), 200 );
-    }
-
      /**
      * Get Category
      *
@@ -218,21 +143,6 @@ class Admin {
         ), 200 );
     }
 
-    /**
-     * Create OR Update title
-     *
-     * @param WP_REST_Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Request
-     */
-    public function update_uneek_title( $request ) {
-        $updated = update_option( 'uneek-title', $request->get_param( 'title' ) );
-
-        return new \WP_REST_Response( array(
-            'success'   => $updated,
-            'value'     => $request->get_param( 'title' )
-        ), 200 );
-    }
-
         /**
      * Create OR Update category
      *
@@ -245,21 +155,6 @@ class Admin {
         return new \WP_REST_Response( array(
             'success'   => $updated,
             'value'     => $request->get_param( 'category' )
-        ), 200 );
-    }
-
-    /**
-     * Delete title
-     *
-     * @param WP_REST_Request $request Full data about the request.
-     * @return WP_Error|WP_REST_Request
-     */
-    public function delete_uneek_title( $request ) {
-        $deleted = delete_option( 'uneek-title' );
-
-        return new \WP_REST_Response( array(
-            'success'   => $deleted,
-            'value'     => ''
         ), 200 );
     }
 
