@@ -1,0 +1,157 @@
+/*------------------*/
+/*     CSS GRID     */
+
+.ds-grid {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(1, 200px);
+
+    grid-template-rows: 1fr;
+    padding: 0;
+    grid-template-areas: 
+    
+    "filmImage filmTitle filmExcerpt"
+    "btnViewFilm";
+}
+
+.ds-grid-item {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 1200px){
+    .ds-grid {
+        display: grid;
+        grid-template-columns: repeat(1, auto);
+        grid-template-rows: repeat(4, 200px);
+    
+        grid-template-rows: 1fr;
+        padding: 0;
+        grid-template-areas: 
+        
+        "filmImage"
+        "filmTitle" 
+        "filmExcerpt"
+        "btnViewFilm";
+    }
+    .filmImage, .filmImageHover{
+        margin: 0 auto;
+        box-shadow: 1px 1px 1px 1px;
+    }
+    .filmExcerpt{
+        font-size: 22px !important;
+    }
+    .filmDivider{
+        visibility: visible !important;
+    }
+}
+
+@media only screen and (max-width: 800px){
+    .filmExcerpt{
+        font-size: 18px !important;
+        line-height: 2 !important;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .filmExcerpt{
+        font-size: 16px !important;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .filmListHeader{
+        font-size: 55px !important;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .filmListHeader{
+        font-size: 35px !important;
+    }
+}
+
+filmTitle {
+    grid-area: filmTitle;
+}
+filmExcerpt {
+    grid-area: filmExcerpt;
+}
+filmImage {
+    grid-area: filmImage;
+}
+btnViewFilm {
+    grid-area: btnViewFilm;
+}
+
+/* END OF CSS GRID */
+/*-----------------*/
+
+/*------------------*/
+/*   FILM ELEMENTS  */
+
+
+.filmImageHover{
+    opacity: 0.8;
+    box-shadow: 1px 1px;
+  }
+
+
+.filmListHeader{
+    text-align: center;
+    font-size: 5rem;
+}
+
+.btnViewFilm{
+    background-color: #333;
+    color: white;
+    padding: 14px 25px;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 18px;
+}
+
+.btnViewFilmHover{
+    background-color: white;
+    color: #333;
+    padding: 14px 25px;
+    text-align: center; 
+    text-decoration: none;
+    border: #333 1px solid;
+    display: inline-block;
+    margin-left: 18px;
+}
+
+.filmExcerpt{
+    font-size: 26px;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.filmTitle{
+    font-weight: bold;
+}
+
+.filmDivider{
+    border: 2px solid #333;
+    width: 100%;
+    visibility: hidden;
+}
+
+
+/* END OF FILM ELEMENTS */
+/*----------------------*/
+
+/*----------------------*/
+/*         ASSETS       */
+
+.SVGSpinner{
+    text-align: center;
+}
+
+/*    END OF ASSETS     */
+/*----------------------*/
