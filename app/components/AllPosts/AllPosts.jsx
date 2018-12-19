@@ -11,8 +11,10 @@ export default class AllPosts extends Component{
 
     state = {
         postData: [],
-        dataFetched: false
+        dataFetched: false,
+        filterValue: ""
     } 
+
     getPosts = () => {
         let api_url = this.props.api_url;
         let categoryID = this.props.categoryToRender;
@@ -27,7 +29,6 @@ export default class AllPosts extends Component{
             })
         })
     }    
-  
 
     stripHTML = (index) => {
         let rawData = this.state.postData[index].excerpt.rendered;
@@ -36,6 +37,22 @@ export default class AllPosts extends Component{
           .body
           .textContent
           .trim()
+      }
+
+      stripFilteredHTML = (rawData) => {
+        return new DOMParser()
+          .parseFromString(rawData, 'text/html')
+          .body
+          .textContent
+          .trim()
+      }
+
+      filterChangeHandler = e => this.setState({ filterValue: e.target.value });
+
+      filterItems(){
+        const { postData, filterValue } = this.state;
+        const sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue))
+        return sortedFilteredPosts;
       }
 
 render(){
@@ -51,9 +68,30 @@ render(){
 
     if(this.state.dataFetched && this.state.postData.length === 0){
         return(
+            <div className="noPostsFound">
+                <h1 >No Posts Found! :(</h1>
+                <p>Please visit <strong>Settings/Uneek Gallery</strong> from the dashboard and check the category selected.</p>
+            </div>
+        )
+    }
+
+    if(this.state.filterValue !== ""){
+        return(
             <div>
-                <h1 className="noPostsFound">No Posts Found! :(</h1>
-                <p className="noPostsFound">Please visit <strong>Settings/Uneek Gallery</strong> from the dashboard and check the category selected.</p>
+                <div className="uneekGallerySearchBarContainer">
+                    <SearchBar
+                        value={this.state.filterValue}
+                        onChange={this.filterChangeHandler}
+                    />
+        </div>
+            {this.filterItems().map((post, index) => <Post
+                key={this.filterItems()[index].id}
+                filmTitle={this.filterItems()[index].title.rendered}
+                filmExcerpt={this.stripFilteredHTML(this.filterItems()[index].excerpt.rendered)}  
+                filmImage={this.filterItems()[index].better_featured_image.source_url}
+                filmLink={this.filterItems()[index].link}
+            />)}
+                
             </div>
         )
     }
@@ -61,7 +99,10 @@ render(){
     return(
         <div>
         <div className="uneekGallerySearchBarContainer">
-            <SearchBar />
+            <SearchBar 
+            value={this.state.filterValue}
+            onChange={this.filterChangeHandler}
+            />
         </div>
         {this.state.postData.map((post, index) => <Post
         key={this.state.postData[index].id}

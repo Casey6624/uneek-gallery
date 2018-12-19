@@ -1,14 +1,17 @@
 import React from "react";
 
-const SearchBar = () => {
-
-    return(
-        <div>
-            <input id="uneekGallerySearchBar" type="text" placeholder="SEARCH FOR FILM..."/>
-        </div>
-    )
-
-
-}
+const SearchBar = ({ value, onChange }) => {
+    return (
+      <div>
+        <input
+          id="uneekGallerySearchBar"
+          type="text"
+          placeholder="SEARCH FOR FILM..."
+          value={value}
+          onChange={onChange}
+        />
+      </div>
+    );
+  };
 
 export default SearchBar;
