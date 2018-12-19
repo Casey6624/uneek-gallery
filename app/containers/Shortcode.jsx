@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AllPosts from "../components/AllPosts/AllPosts";
-//import SearchBar from "../components/SearchBar/SearchBar";
 import fetchWP from "../utils/fetchWP";
 
 export default class Shortcode extends Component {
@@ -28,7 +27,7 @@ export default class Shortcode extends Component {
   }
 
   getTitleSetting = () => {
-    this.fetchWP.get( 'admin' )
+    this.fetchWP.get( 'adminTitle' )
     .then(
       (json) => this.setState({galleryHeader: json.value}),
       (err) => console.log( 'error', err )

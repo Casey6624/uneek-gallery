@@ -4,7 +4,7 @@ const SearchBar = () => {
 
     return(
         <div>
-            <input type="text"/>
+            <input id="uneekGallerySearchBar" type="text" placeholder="SEARCH FOR FILM..."/>
         </div>
     )
 

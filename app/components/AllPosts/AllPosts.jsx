@@ -1,10 +1,11 @@
 // Libaries
 import React, { Component } from "react";
 import axios from "axios";
-import _ from "lodash";
+//import _ from "lodash";
 // Components
 import Loading from "../../../assets/Loading/Loading";
 import Post from "../Post/Post";
+import SearchBar from "../SearchBar/SearchBar";
 
 export default class AllPosts extends Component{
 
@@ -59,6 +60,9 @@ render(){
 
     return(
         <div>
+        <div className="uneekGallerySearchBarContainer">
+            <SearchBar />
+        </div>
         {this.state.postData.map((post, index) => <Post
         key={this.state.postData[index].id}
         filmTitle={this.state.postData[index].title.rendered}
