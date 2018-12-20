@@ -72,6 +72,7 @@ class Plugin {
 	public static function activate() {
 		add_option( 'uneek-title' );
 		add_option( 'uneek-category' );
+		add_option( 'uneek-search' );
 	}
 
 	/**

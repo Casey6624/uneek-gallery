@@ -1,7 +1,8 @@
 import React from "react";
 
-const SearchBar = ({ value, onChange }) => {
-    return (
+const SearchBar = ({value, onChange}) => {
+    
+  return (
       <div>
         <input
           id="uneekGallerySearchBar"

@@ -15,6 +15,8 @@ export default class Admin extends Component {
       savedTitle: '',
       category: '',
       savedCategory: '',
+      search: '',
+      savedSearch: '',
       notice: false,
     };
 
@@ -26,10 +28,11 @@ export default class Admin extends Component {
     // Get the currently set title address from our /admin endpoint and update the title state accordingly
     this.getTitleSetting();
     this.getCategorySetting();
+    this.getSearchSetting();
   }
   // Title API Calls -----------------------------------------------------------------------------------------------
   getTitleSetting = () => {
-    this.fetchWP.get( 'admin' )
+    this.fetchWP.get( 'adminTitle' )
     .then(
       (json) => this.setState({
         title: json.value,
@@ -40,7 +43,7 @@ export default class Admin extends Component {
   };
 
   updateTitleSetting = () => {
-    this.fetchWP.post( 'admin', { title: this.state.title } )
+    this.fetchWP.post( 'adminTitle', { title: this.state.title } )
     .then(
       (json) => this.processOkTitleResponse(json, 'saved'),
       (err) => this.setState({
@@ -53,7 +56,7 @@ export default class Admin extends Component {
   }
 
   deleteTitleSetting = () => {
-    this.fetchWP.delete( 'admin' )
+    this.fetchWP.delete( 'adminTitle' )
     .then(
       (json) => this.processOkTitleResponse(json, 'deleted'),
       (err) => console.log('error', err)
@@ -133,6 +136,60 @@ export default class Admin extends Component {
     }
   }
 
+  // Search API Calls -----------------------------------------------------------------------------------------------
+  getSearchSetting = () => {
+    this.fetchWP.get( 'adminSearch' )
+    .then(
+      (json) => this.setState({
+        search: json.value,
+        savedSearch: json.value
+      }),
+      (err) => console.log( 'error', err )
+    );
+  };
+
+  updateSearchSetting = () => {
+    this.fetchWP.post( 'adminSearch', { search: this.state.search } )
+    .then(
+      (json) => this.processOkSearchResponse(json, 'saved'),
+      (err) => this.setState({
+        notice: {
+          type: 'error',
+          message: err.message, // The error message returned by the REST API
+        }
+      })
+    );
+  }
+
+  deleteSearchSetting = () => {
+    this.fetchWP.delete( 'adminSearch' )
+    .then(
+      (json) => this.processOkSearchResponse(json, 'deleted'),
+      (err) => console.log('error', err)
+    );
+  }
+
+  processOkSearchResponse = (json, action) => {
+    if (json.success) {
+      this.setState({
+        search: json.value,
+        savedSearch: json.value,
+        notice: {
+          type: 'success',
+          message: `Setting ${action} successfully.`,
+        }
+      });
+    } else {
+      this.setState({
+        notice: {
+          type: 'error',
+          message: `Setting was not ${action}.`,
+        }
+      });
+    }
+  }
+
+
   // Title Handlers -----------------------------------------------------------------------------------
   updateTitleInput = (event) => {
     this.setState({
@@ -185,6 +242,33 @@ export default class Admin extends Component {
     event.preventDefault();
     this.deleteCategorySetting();
   }
+
+    // Search Handlers -----------------------------------------------------------------------------------
+    updateSearchInput = (event) => {
+      this.setState({
+        search : event.target.value,
+      });
+    }
+  
+    handleSearchSave = (event) => {
+      event.preventDefault();
+      if ( this.state.search === this.state.savedSearch ) {
+        this.setState({
+          notice: {
+            type: 'warning',
+            message: 'Setting Unchanged: Requested search setting is already enabled.,'
+          }
+        });
+      } else {
+        this.updateSearchSetting();
+      }
+    }
+  
+    handleSearchDelete = (event) => {
+      event.preventDefault();
+      this.deleteSearchSetting();
+    }
+
   //------------------------------------------------------------------------------------------------------------------
   clearNotice = () => {
     this.setState({
@@ -205,7 +289,7 @@ export default class Admin extends Component {
         <form>
           <h1>Uneek Gallery Settings</h1>
           <br/>
-          <p>What would you like the title of the gallery to be?</p>
+          <h4>What would you like the title of the gallery to be?</h4>
           <label> 
           Gallery Title: &nbsp;
             <input
@@ -229,7 +313,7 @@ export default class Admin extends Component {
           >Delete</button>
           <br/><br/>
           {/*-------------------------------------------------------------------------------------------------*/}
-          <p>Which category would you like to display on the gallery? You can list multiple categories by seperating the IDs with a comma (E.g "1, 4" would return categories 1 and 4 ).</p>
+          <h4>Which category would you like to display on the gallery? <i>NOTE: You can list multiple categories by seperating the IDs with a comma (E.g "1, 4" would return categories 1 and 4 ).</i></h4>
           <label> 
           Category ID: &nbsp;
             <input
@@ -250,7 +334,29 @@ export default class Admin extends Component {
             id="delete"
             className="button button-primary"
             onClick={this.handleCategoryDelete}
+          >Delete</button><br/><br/>
+          {/*-------------------------------------------------------------------------------------------------*/}
+          <h4>Would you like to enable a search bar so visitors can refine the list of posts?</h4>
+          <label> 
+          Show Search Bar?&nbsp;
+          <select type="search" onChange={this.updateSearchInput} value={this.state.search}>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
+          </select>&nbsp;
+          </label>
+
+          <button
+            id="save"
+            className="button button-primary"
+            onClick={this.handleSearchSave}
+          >Save</button>&nbsp;
+
+          <button
+            id="delete"
+            className="button button-primary"
+            onClick={this.handleSearchDelete}
           >Delete</button>
+
         </form>
       </div>
     );

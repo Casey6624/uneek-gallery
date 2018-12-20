@@ -30,8 +30,14 @@ export default class AllPosts extends Component{
         })
     }    
 
-    stripHTML = (index) => {
-        let rawData = this.state.postData[index].excerpt.rendered;
+    stripHTML = (indexOrData) => {
+        let rawData;
+
+        if(Number.isInteger(indexOrData)){
+            rawData = this.state.postData[indexOrData].excerpt.rendered;
+        }else{
+            rawData = indexOrData;
+        }
         return new DOMParser()
           .parseFromString(rawData, 'text/html')
           .body
@@ -39,23 +45,18 @@ export default class AllPosts extends Component{
           .trim()
       }
 
-      stripFilteredHTML = (rawData) => {
-        return new DOMParser()
-          .parseFromString(rawData, 'text/html')
-          .body
-          .textContent
-          .trim()
-      }
 
-      filterChangeHandler = e => this.setState({ filterValue: e.target.value });
+      filterChangeHandler = e => this.setState({ filterValue: e.target.value});
 
       filterItems(){
         const { postData, filterValue } = this.state;
-        const sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue))
+        const sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
         return sortedFilteredPosts;
       }
 
 render(){
+
+    console.log(this.props.showSearchBar);
 
     if(!this.state.dataFetched && this.props.categoryToRender !== null){
         this.getPosts();
@@ -79,15 +80,12 @@ render(){
         return(
             <div>
                 <div className="uneekGallerySearchBarContainer">
-                    <SearchBar
-                        value={this.state.filterValue}
-                        onChange={this.filterChangeHandler}
-                    />
-        </div>
+                    <SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/>
+                </div>
             {this.filterItems().map((post, index) => <Post
                 key={this.filterItems()[index].id}
                 filmTitle={this.filterItems()[index].title.rendered}
-                filmExcerpt={this.stripFilteredHTML(this.filterItems()[index].excerpt.rendered)}  
+                filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
                 filmImage={this.filterItems()[index].better_featured_image.source_url}
                 filmLink={this.filterItems()[index].link}
             />)}
@@ -98,19 +96,13 @@ render(){
 
     return(
         <div>
-        <div className="uneekGallerySearchBarContainer">
-            <SearchBar 
-            value={this.state.filterValue}
-            onChange={this.filterChangeHandler}
-            />
-        </div>
+        {this.props.showSearchBar ? <div className="uneekGallerySearchBarContainer"><SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/></div> : null}
         {this.state.postData.map((post, index) => <Post
-        key={this.state.postData[index].id}
-        filmTitle={this.state.postData[index].title.rendered}
-        filmExcerpt={this.stripHTML(index)}    
-        filmImage={this.state.postData[index].better_featured_image.source_url}
-        filmLink={this.state.postData[index].link}
-
+            key={this.state.postData[index].id}
+            filmTitle={this.state.postData[index].title.rendered}
+            filmExcerpt={this.stripHTML(index)}    
+            filmImage={this.state.postData[index].better_featured_image.source_url}
+            filmLink={this.state.postData[index].link}
         />)}
             
         </div>

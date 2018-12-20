@@ -12,7 +12,7 @@
  * Version:           1.0.2
  * Author:            Casey Smith
  * Author URI:        https://caseysmith.co.uk
- * Text Domain:       wp-reactivate
+ * Text Domain:       uneek-gallery
  * License:           GPL-3.0
  * Domain Path:       /languages
  */
@@ -26,7 +26,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'WP_REACTIVATE_VERSION', '1.0.2' );
-
 
 /**
  * Autoloader
@@ -76,6 +75,7 @@ function init() {
 	$wpr_admin = Admin::get_instance();
     $wpr_rest_adminTitle = Endpoint\AdminTitle::get_instance();
     $wpr_rest_adminCategory = Endpoint\AdminCategory::get_instance();
+    $wpr_rest_adminSearch = Endpoint\AdminSearch::get_instance();
 }
 add_action( 'plugins_loaded', 'Pangolin\\WPR\\init' );
 
