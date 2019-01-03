@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 //import _ from "lodash";
 // Components
-import Loading from "../../../assets/Loading/Loading";
+import Loading from "../Loading/Loading";
 import Post from "../Post/Post";
 import SearchBar from "../SearchBar/SearchBar";
 
@@ -46,7 +46,7 @@ export default class AllPosts extends Component{
       }
 
 
-      filterChangeHandler = e => this.setState({ filterValue: e.target.value});
+      filterChangeHandler = e => this.setState({ filterValue: e.target.value.toUpperCase()});
 
       filterItems(){
         const { postData, filterValue } = this.state;
@@ -55,8 +55,6 @@ export default class AllPosts extends Component{
       }
 
 render(){
-
-    console.log(this.props.showSearchBar);
 
     if(!this.state.dataFetched && this.props.categoryToRender !== null){
         this.getPosts();
@@ -84,7 +82,7 @@ render(){
                 </div>
             {this.filterItems().map((post, index) => <Post
                 key={this.filterItems()[index].id}
-                filmTitle={this.filterItems()[index].title.rendered}
+                filmTitle={this.filterItems()[index].title.rendered.toUpperCase()}
                 filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
                 filmImage={this.filterItems()[index].better_featured_image.source_url}
                 filmLink={this.filterItems()[index].link}

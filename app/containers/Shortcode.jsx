@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AllPosts from "../components/AllPosts/AllPosts";
 import fetchWP from "../utils/fetchWP";
+import Loading from "../components/Loading/Loading";
+
 
 export default class Shortcode extends Component {
 
@@ -16,33 +18,49 @@ export default class Shortcode extends Component {
     this.state = {
       galleryHeader: null,
       categoryToRender: null,
-      showSearchBar: null
+      showSearchBar: null,
+      APIErrors: [],
+      loadingPage: true
     }
 
-    this.getSettings();
+      this.getSettings();
+
   } 
 
   getSettings = () => {
       this.fetchWP.get( 'adminTitle' )
       .then(
         (json) => this.setState({galleryHeader: json.value}),
-        (err) => console.log( 'error', err )
+        (err) => this.setState({errors: err})
         );
       this.fetchWP.get( 'adminCategory' )
       .then(
         (json) => this.setState({categoryToRender: json.value}),
-        (err) => console.log( 'error', err )
+        (err) => this.setState({errors: err})
       );
       this.fetchWP.get( 'adminSearch' )
       .then(
         (json) => this.setState({showSearchBar: json.value}),
-        (err) => console.log( 'error', err )
+        (err) => this.setState({errors: err})
       );
     }
 
+    componentDidMount(){
+      this.setState({loadingPage: false})
+    }
   render() {
+
+    if(this.state.loadingPage){
+      return(
+        <div>
+          <Loading />
+        </div>
+      )
+    }
+
+
     return (
-      <div>
+      <div className="uneek-container">
         <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
         <AllPosts 
         api_url={this.props.wpObject.api_url}

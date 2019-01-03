@@ -7,7 +7,10 @@ const SearchBar = ({value, onChange}) => {
         <input
           id="uneekGallerySearchBar"
           type="text"
-          placeholder="SEARCH FOR FILM..."
+          style={{
+            textAlign: "center"
+          }}
+          placeholder="SEARCH FOR A PRODUCTION..."
           value={value}
           onChange={onChange}
         />
