@@ -1,7 +1,6 @@
 // Libaries
 import React, { Component } from "react";
 import axios from "axios";
-//import _ from "lodash";
 // Components
 import Loading from "../Loading/Loading";
 import Post from "../Post/Post";
@@ -45,6 +44,13 @@ export default class AllPosts extends Component{
           .trim()
       }
 
+      prevToggled = () => {
+          console.log("Previous toggled");
+      }
+
+      nextToggled = () => {
+          console.log("Next toggled");
+      }
 
       filterChangeHandler = e => this.setState({ filterValue: e.target.value.toUpperCase()});
 
@@ -80,6 +86,7 @@ render(){
                 <div className="uneekGallerySearchBarContainer">
                     <SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/>
                 </div>
+
             {this.filterItems().map((post, index) => <Post
                 key={this.filterItems()[index].id}
                 filmTitle={this.filterItems()[index].title.rendered.toUpperCase()}
@@ -102,7 +109,18 @@ render(){
             filmImage={this.state.postData[index].better_featured_image.source_url}
             filmLink={this.state.postData[index].link}
         />)}
-            
+            <div className="nextPrevBar">
+                <div className="nextPrevLinks">
+                    <a
+                    onClick={this.prevToggled}
+                    >PREV</a>
+                </div>
+                <div className="nextPrevLinks">
+                    <a
+                    onClick={this.nextToggled}
+                    >NEXT</a>
+                </div>
+            </div>
         </div>
     )
 }

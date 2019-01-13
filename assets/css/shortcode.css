@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+
 /*------------------*/
 /*     CSS GRID     */
 
@@ -43,6 +45,7 @@
     }
     .filmExcerpt{
         font-size: 22px !important;
+        font-family: 'Open Sans Condensed', sans-serif;
     }
     .filmDivider{
         visibility: visible !important;
@@ -59,18 +62,21 @@
 @media only screen and (max-width: 600px){
     .filmExcerpt{
         font-size: 16px !important;
+        font-family: 'Open Sans Condensed', sans-serif;
     }
 }
 
 @media only screen and (max-width: 600px){
     .filmListHeader{
         font-size: 55px !important;
+        font-family: 'Open Sans Condensed', sans-serif;
     }
 }
 
 @media only screen and (max-width: 500px){
     .filmListHeader{
         font-size: 35px !important;
+        font-family: 'Open Sans Condensed', sans-serif;
     }
 }
 
@@ -90,6 +96,7 @@
 .filmListHeader{
     text-align: center;
     font-size: 5rem;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 .btnViewFilm{
@@ -118,13 +125,16 @@
 }
 
 .filmExcerpt{
-    font-size: 26px;
+    font-size: 35px;
     line-height: 1.5;
     text-transform: uppercase;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 .filmTitle{
     font-weight: bold;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 50px;
 }
 
 .filmDivider{
@@ -173,6 +183,19 @@
 
 /*    END OF Searchbar  */
 /*----------------------*/
+
+/* Next and Previous Links CSS*/
+
+.nextPrevBar{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nextPrevLinks a{
+    color: #f2f2f2;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 25px;
+}
 
 /* Container Animations
 --------------------------
