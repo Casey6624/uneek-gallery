@@ -88,11 +88,11 @@ render(){
                 </div>
             {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
-                key={this.filterItems()[index].id}
-                filmTitle={this.filterItems()[index].title.rendered.toUpperCase()}
-                filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
-                filmImage={this.filterItems()[index]._embedded['wp:featuredmedia'][0].source_url}
-                filmLink={this.filterItems()[index].link}
+                key={this.filterItems()[index].id === undefined ? null : this.filterItems()[index].id}
+                filmTitle={this.filterItems()[index].title.rendered.toUpperCase() === undefined ? null : this.filterItems()[index].title.rendered.toUpperCase()}
+                filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered) === undefined ? null : this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
+                filmImage={this.filterItems()[index]._embedded['wp:featuredmedia'] === undefined ? null : this.filterItems()[index]._embedded['wp:featuredmedia'][0].source_url}
+                filmLink={this.filterItems()[index].link === undefined ? null : this.filterItems()[index].link}
             />)}
                 
             </div>
@@ -103,11 +103,11 @@ render(){
         <div>
         {this.props.showSearchBar ? <div className="uneekGallerySearchBarContainer"><SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/></div> : null}
         {this.state.postData.map((post, index) => <Post
-            key={this.state.postData[index].id}
-            filmTitle={this.state.postData[index].title.rendered}
-            filmExcerpt={this.stripHTML(index)}    
-            filmImage={this.state.postData[index]._embedded['wp:featuredmedia'][0].source_url}
-            filmLink={this.state.postData[index].link}
+            key={this.state.postData[index].id === undefined ? null : this.state.postData[index].id}
+            filmTitle={this.state.postData[index].title.rendered === undefined ? null : this.state.postData[index].title.rendered.toUpperCase()}
+            filmExcerpt={this.stripHTML(index) === undefined ? null : this.stripHTML(index)}    
+            filmImage={this.state.postData[index]._embedded['wp:featuredmedia'] === undefined ? null : this.state.postData[index]._embedded['wp:featuredmedia'][0].source_url}
+            filmLink={this.state.postData[index].link === undefined ? null : this.state.postData[index].link}
         />)}
             <div className="nextPrevBar">
                 <div className="nextPrevLinks">
