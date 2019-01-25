@@ -25,255 +25,176 @@ export default class Admin extends Component {
       restNonce: this.props.wpObject.api_nonce
     });
 
-    // Get the currently set title address from our /admin endpoint and update the title state accordingly
-    this.getTitleSetting();
-    this.getCategorySetting();
-    this.getSearchSetting();
+    this.getSettingsFromAPI();
   }
-  // Title API Calls -----------------------------------------------------------------------------------------------
-  getTitleSetting = () => {
+
+  // REFRACTED HANDLERS ----------------------------------------------------------------------------------------
+
+  // take the event from the text boxes and update state with their new value
+  updateSettingsInput = event => {
+    this.setState({ [event.target.name] : event.target.value })
+  }
+
+  // used to validate the current setting is not the same as the new inputted one.
+  handleSettingSave = (event) => {
+    event.preventDefault();
+    let settingsType = event.target.name;
+    switch(settingsType){
+      case "title":
+      if ( this.state.title === this.state.savedTitle ) {
+        this.setState({
+          notice: {
+            type: 'warning',
+            message: `Setting Unchanged: the ${settingsType} is already set to the inputted value.`
+          }
+        });
+      } else {
+        this.updateTitleSetting(settingsType);
+      }
+      break;
+      case "category":
+      if ( this.state.category === this.state.savedCategory ) {
+        this.setState({
+          notice: {
+            type: 'warning',
+            message: `Setting Unchanged: the ${settingsType} is already set to the inputted value.`
+          }
+        });
+      } else {
+        this.updateCategorySetting(settingsType);
+      }
+      break;
+      case "search":
+      if ( this.state.search === this.state.savedSearch ) {
+        this.setState({
+          notice: {
+            type: 'warning',
+            message: `Setting Unchanged: the ${settingsType} is already set to the inputted value.`
+          }
+        });
+      } else {
+        this.updateSearchSetting(settingsType);
+      }
+      break;
+    }
+  }
+
+  handleSettingDelete = event => {
+    event.preventDefault();
+    let settingType = event.target.name;
+
+    switch(settingType){
+      case "title":
+      this.deleteTitleSetting(settingType);
+      break;
+      case "category":
+      this.deleteCategorySetting(settingType);
+      break;
+      case "search":
+      this.deleteSearchSetting(settingType);
+      break;
+    }
+  }
+
+  clearNotice = () => {
+    this.setState({
+      notice: false,
+    });
+  }
+  // *************************************************************************************************************
+  // REFRACTED API CALLS-------------------------------------------------------------------------------------------
+
+  // Call all PHP endpoints and setState with results
+  getSettingsFromAPI = () => {
+    let errors = [];
     this.fetchWP.get( 'adminTitle' )
     .then(
       (json) => this.setState({
         title: json.value,
         savedTitle: json.value
       }),
-      (err) => console.log( 'error', err )
+      (err) => errors.push(err)
     );
-  };
-
-  updateTitleSetting = () => {
-    this.fetchWP.post( 'adminTitle', { title: this.state.title } )
-    .then(
-      (json) => this.processOkTitleResponse(json, 'saved'),
-      (err) => this.setState({
-        notice: {
-          type: 'error',
-          message: err.message, // The error message returned by the REST API
-        }
-      })
-    );
-  }
-
-  deleteTitleSetting = () => {
-    this.fetchWP.delete( 'adminTitle' )
-    .then(
-      (json) => this.processOkTitleResponse(json, 'deleted'),
-      (err) => console.log('error', err)
-    );
-  }
-
-  processOkTitleResponse = (json, action) => {
-    if (json.success) {
-      this.setState({
-        title: json.value,
-        savedTitle: json.value,
-        notice: {
-          type: 'success',
-          message: `Setting ${action} successfully.`,
-        }
-      });
-    } else {
-      this.setState({
-        notice: {
-          type: 'error',
-          message: `Setting was not ${action}.`,
-        }
-      });
-    }
-  }
-
-   // Category API Calls -----------------------------------------------------------------------------------------------
-   getCategorySetting = () => {
     this.fetchWP.get( 'adminCategory' )
     .then(
       (json) => this.setState({
         category: json.value,
         savedCategory: json.value
       }),
-      (err) => console.log( 'error', err )
+      (err) => errors.push(err)
     );
-  };
-
-  updateCategorySetting = () => {
-    this.fetchWP.post( 'adminCategory', { category: this.state.category } )
-    .then(
-      (json) => this.processOkCategoryResponse(json, 'saved'),
-      (err) => this.setState({
-        notice: {
-          type: 'error',
-          message: err.message, // The error message returned by the REST API
-        }
-      })
-    );
-  }
-
-  deleteCategorySetting = () => {
-    this.fetchWP.delete( 'adminCategory' )
-    .then(
-      (json) => this.processOkCategoryResponse(json, 'deleted'),
-      (err) => console.log('error', err)
-    );
-  }
-
-  processOkCategoryResponse = (json, action) => {
-    if (json.success) {
-      this.setState({
-        category: json.value,
-        savedCategory: json.value,
-        notice: {
-          type: 'success',
-          message: `Setting ${action} successfully.`,
-        }
-      });
-    } else {
-      this.setState({
-        notice: {
-          type: 'error',
-          message: `Setting was not ${action}.`,
-        }
-      });
-    }
-  }
-
-  // Search API Calls -----------------------------------------------------------------------------------------------
-  getSearchSetting = () => {
     this.fetchWP.get( 'adminSearch' )
     .then(
       (json) => this.setState({
         search: json.value,
         savedSearch: json.value
       }),
-      (err) => console.log( 'error', err )
+      (err) => errors.push(err)
     );
   };
-
-  updateSearchSetting = () => {
-    this.fetchWP.post( 'adminSearch', { search: this.state.search } )
-    .then(
-      (json) => this.processOkSearchResponse(json, 'saved'),
-      (err) => this.setState({
-        notice: {
-          type: 'error',
-          message: err.message, // The error message returned by the REST API
-        }
-      })
-    );
-  }
-
-  deleteSearchSetting = () => {
-    this.fetchWP.delete( 'adminSearch' )
-    .then(
-      (json) => this.processOkSearchResponse(json, 'deleted'),
-      (err) => console.log('error', err)
-    );
-  }
-
-  processOkSearchResponse = (json, action) => {
-    if (json.success) {
-      this.setState({
-        search: json.value,
-        savedSearch: json.value,
-        notice: {
-          type: 'success',
-          message: `Setting ${action} successfully.`,
-        }
-      });
-    } else {
-      this.setState({
-        notice: {
-          type: 'error',
-          message: `Setting was not ${action}.`,
-        }
-      });
-    }
-  }
-
-
-  // Title Handlers -----------------------------------------------------------------------------------
-  updateTitleInput = (event) => {
-    this.setState({
-      title: event.target.value,
-    });
-  }
-
-  handleTitleSave = (event) => {
-    event.preventDefault();
-    if ( this.state.title === this.state.savedTitle ) {
-      this.setState({
-        notice: {
-          type: 'warning',
-          message: 'Setting Unchanged: the title is already set to the inputted value.,'
-        }
-      });
-    } else {
-      this.updateTitleSetting();
-    }
-  }
-
-  handleTitleDelete = (event) => {
-    event.preventDefault();
-    this.deleteTitleSetting();
-  }
-
-  // Category Handlers -------------------------------------------------------------------------------------------
-
-  updateCategoryInput = (event) => {
-    this.setState({
-      category: event.target.value,
-    });
-  }
-
-  handleCategorySave = (event) => {
-    event.preventDefault();
-    if ( this.state.category === this.state.savedCategory ) {
-      this.setState({
-        notice: {
-          type: 'warning',
-          message: 'Setting Unchanged: the category is already set to the inputted value.',
-        }
-      });
-    } else {
-      this.updateCategorySetting();
-    }
-  }
-
-  handleCategoryDelete = (event) => {
-    event.preventDefault();
-    this.deleteCategorySetting();
-  }
-
-    // Search Handlers -----------------------------------------------------------------------------------
-    updateSearchInput = (event) => {
-      this.setState({
-        search : event.target.value,
-      });
-    }
-  
-    handleSearchSave = (event) => {
-      event.preventDefault();
-      if ( this.state.search === this.state.savedSearch ) {
-        this.setState({
-          notice: {
-            type: 'warning',
-            message: 'Setting Unchanged: Requested search setting is already enabled.,'
-          }
-        });
+  // Validate and display setState errors if any issues
+  processOkResponse = (json, action, settingType) => {
+    switch(settingType){
+      case "title":
+      if (json.success) {
+        this.setState({title: json.value, savedTitle: json.value, notice: {type: 'success',message: `Setting ${action} successfully.`,}});
       } else {
-        this.updateSearchSetting();
+        this.setState({notice: { type: 'error', message: `Setting was not ${action}.`,}});
       }
+      break;
+      case "category":
+      if (json.success) {
+        this.setState({category: json.value, savedCategory: json.value, notice: {type: 'success',message: `Setting ${action} successfully.`,}});
+      } else {
+        this.setState({notice: { type: 'error', message: `Setting was not ${action}.`,}});
+      }
+      break;
+      case "search":
+      if (json.success) {
+        this.setState({search: json.value, savedSearch: json.value, notice: {type: 'success',message: `Setting ${action} successfully.`,}});
+      } else {
+        this.setState({notice: { type: 'error', message: `Setting was not ${action}.`,}});
+      }
+      break;
     }
-  
-    handleSearchDelete = (event) => {
-      event.preventDefault();
-      this.deleteSearchSetting();
-    }
+  }
+  // TITLE API CALLS -----------------------------------------------------------------------------------------------
 
-  //------------------------------------------------------------------------------------------------------------------
-  clearNotice = () => {
-    this.setState({
-      notice: false,
-    });
+  updateTitleSetting = (settingType) => {
+    this.fetchWP.post( 'adminTitle', { title: this.state.title } )
+    .then((json) => this.processOkResponse(json, 'saved', settingType),(err) => this.setState({
+        notice: {type: 'error', message: err.message}}));
+  }
+
+  deleteTitleSetting = (settingType) => {
+    this.fetchWP.delete( 'adminTitle' )
+    .then((json) => this.processOkResponse(json, 'deleted', settingType),(err) => console.log('error', err));
+  }
+
+   // CATEGORY API CALLS -----------------------------------------------------------------------------------------------
+
+  updateCategorySetting = (settingType) => {
+    this.fetchWP.post( 'adminCategory', { category: this.state.category } )
+    .then((json) => this.processOkResponse(json, 'saved', settingType),(err) => this.setState({
+        notice: {type: 'error', message: err.message}}));
+  }
+
+  deleteCategorySetting = (settingType) => {
+    this.fetchWP.delete( 'adminCategory' )
+    .then((json) => this.processOkResponse(json, 'deleted', settingType),(err) => console.log('error', err));
+  }
+
+  // SEARCH API CALLS -----------------------------------------------------------------------------------------------
+
+  updateSearchSetting = (settingType) => {
+    this.fetchWP.post( 'adminSearch', { search: this.state.search } )
+    .then((json) => this.processOkResponse(json, 'saved', settingType),(err) => this.setState({
+        notice: {type: 'error', message: err.message}}));
+  }
+
+  deleteSearchSetting = (settingType) => {
+    this.fetchWP.delete( 'adminSearch' )
+    .then((json) => this.processOkResponse(json, 'deleted', settingType),(err) => console.log('error', err));
   }
 
   render() {
@@ -289,27 +210,32 @@ export default class Admin extends Component {
         <form>
           <h1>Uneek Gallery Settings</h1>
           <br/>
+          <h3>Your Shortcode:&nbsp; <input type="text" value="[uneek-gallery]"/></h3>
+          <br/>
           <h4>What would you like the title of the gallery to be?</h4>
           <label> 
           Gallery Title: &nbsp;
             <input
-              type="title"
+              type="text"
+              name="title"
               value={this.state.title}
               placeholder="E.g My Posts"
-              onChange={this.updateTitleInput}
+              onChange={this.updateSettingsInput}
             />&nbsp;
           </label>
 
           <button
             id="save"
+            name="title"
             className="button button-primary"
-            onClick={this.handleTitleSave}
+            onClick={this.handleSettingSave}
           >Save</button>&nbsp;
 
           <button
             id="delete"
+            name="title"
             className="button button-primary"
-            onClick={this.handleTitleDelete}
+            onClick={this.handleSettingDelete}
           >Delete</button>
           <br/><br/>
           {/*-------------------------------------------------------------------------------------------------*/}
@@ -317,29 +243,37 @@ export default class Admin extends Component {
           <label> 
           Category ID: &nbsp;
             <input
-              type="category"
+              type="text"
+              name="category"
               value={this.state.category}
               placeholder="E.g Posts"
-              onChange={this.updateCategoryInput}
+              onChange={this.updateSettingsInput}
             />&nbsp;
           </label>
 
           <button
             id="save"
+            name="category"
             className="button button-primary"
-            onClick={this.handleCategorySave}
+            onClick={this.handleSettingSave}
           >Save</button>&nbsp;
 
           <button
             id="delete"
+            name="category"
             className="button button-primary"
-            onClick={this.handleCategoryDelete}
+            onClick={this.handleSettingDelete}
           >Delete</button><br/><br/>
           {/*-------------------------------------------------------------------------------------------------*/}
           <h4>Would you like to enable a search bar so visitors can refine the list of posts?</h4>
           <label> 
           Show Search Bar?&nbsp;
-          <select type="search" onChange={this.updateSearchInput} value={this.state.search}>
+          <select 
+          type="search" 
+          onChange={this.updateSettingsInput} 
+          value={this.state.search}
+          name="search"
+          >
             <option value={true}>Yes</option>
             <option value={false}>No</option>
           </select>&nbsp;
@@ -347,14 +281,16 @@ export default class Admin extends Component {
 
           <button
             id="save"
+            name="search"
             className="button button-primary"
-            onClick={this.handleSearchSave}
+            onClick={this.handleSettingSave}
           >Save</button>&nbsp;
 
           <button
             id="delete"
+            name="search"
             className="button button-primary"
-            onClick={this.handleSearchDelete}
+            onClick={this.handleSettingDelete}
           >Delete</button>
 
         </form>

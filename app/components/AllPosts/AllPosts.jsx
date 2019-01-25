@@ -80,24 +80,24 @@ render(){
         )
     }
 
-/*     if(this.state.filterValue !== ""){
+    if(this.state.filterValue !== ""){
         return(
             <div>
                 <div className="uneekGallerySearchBarContainer">
                     <SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/>
                 </div>
-
+            {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
                 key={this.filterItems()[index].id}
                 filmTitle={this.filterItems()[index].title.rendered.toUpperCase()}
                 filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
-                filmImage={this.state.postData[index]._embedded['wp:featuredmedia'][0].source_url}
+                filmImage={this.filterItems()[index]._embedded['wp:featuredmedia'][0].source_url}
                 filmLink={this.filterItems()[index].link}
             />)}
                 
             </div>
         )
-    } */
+    }
 
     return(
         <div>
