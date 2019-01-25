@@ -18,7 +18,7 @@ export default class AllPosts extends Component{
         let api_url = this.props.api_url;
         let categoryID = this.props.categoryToRender;
         let trimmedURL = api_url.split("wp-json")[0];
-        let fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}`;
+        let fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}&_embed`;
         let fetchURL = `${trimmedURL}${fetchParams}`;
         axios.get(fetchURL)
         .then(res => {
@@ -80,7 +80,7 @@ render(){
         )
     }
 
-    if(this.state.filterValue !== ""){
+/*     if(this.state.filterValue !== ""){
         return(
             <div>
                 <div className="uneekGallerySearchBarContainer">
@@ -91,13 +91,13 @@ render(){
                 key={this.filterItems()[index].id}
                 filmTitle={this.filterItems()[index].title.rendered.toUpperCase()}
                 filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
-                filmImage={this.filterItems()[index].better_featured_image.source_url}
+                filmImage={this.state.postData[index]._embedded['wp:featuredmedia'][0].source_url}
                 filmLink={this.filterItems()[index].link}
             />)}
                 
             </div>
         )
-    }
+    } */
 
     return(
         <div>
@@ -106,7 +106,7 @@ render(){
             key={this.state.postData[index].id}
             filmTitle={this.state.postData[index].title.rendered}
             filmExcerpt={this.stripHTML(index)}    
-            filmImage={this.state.postData[index].better_featured_image.source_url}
+            filmImage={this.state.postData[index]._embedded['wp:featuredmedia'][0].source_url}
             filmLink={this.state.postData[index].link}
         />)}
             <div className="nextPrevBar">

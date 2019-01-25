@@ -20,7 +20,8 @@ export default class Shortcode extends Component {
       categoryToRender: null,
       showSearchBar: null,
       APIErrors: [],
-      loadingPage: true
+      loadingPage: true,
+      showCategoryError: false
     }
 
       this.getSettings();
@@ -31,17 +32,17 @@ export default class Shortcode extends Component {
       this.fetchWP.get( 'adminTitle' )
       .then(
         (json) => this.setState({galleryHeader: json.value}),
-        (err) => this.setState({errors: err})
+        (err) => this.setState({APIErrors: err})
         );
       this.fetchWP.get( 'adminCategory' )
       .then(
         (json) => this.setState({categoryToRender: json.value}),
-        (err) => this.setState({errors: err})
+        (err) => this.setState({APIErrors: err, showCategoryError: true})
       );
       this.fetchWP.get( 'adminSearch' )
       .then(
         (json) => this.setState({showSearchBar: json.value}),
-        (err) => this.setState({errors: err})
+        (err) => this.setState({APIErrors: err})
       );
     }
 
@@ -58,7 +59,6 @@ export default class Shortcode extends Component {
       )
     }
 
-
     return (
       <div className="uneek-container">
         <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
@@ -67,7 +67,9 @@ export default class Shortcode extends Component {
         api_nonce={this.props.wpObject.api_nonce}
         categoryToRender={this.state.categoryToRender}
         showSearchBar={this.state.showSearchBar}
+        showCategoryError={this.state.showCategoryError}
         />
+        {this.state.showCategoryError ? <p>Ooops!</p> : null}
       </div>
     );
   }
