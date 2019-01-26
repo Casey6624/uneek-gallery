@@ -39,8 +39,8 @@
         "filmExcerpt"
         "btnViewFilm";
     }
-    .filmImage{
-        margin: 0 auto;
+    .filmImage, .filmImageHover{
+        margin: 0 auto !important;
         width: 80%;
     }
     .filmExcerpt{

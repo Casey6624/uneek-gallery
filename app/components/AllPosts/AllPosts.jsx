@@ -15,11 +15,10 @@ export default class AllPosts extends Component{
     } 
 
     getPosts = () => {
-        let api_url = this.props.api_url;
-        let categoryID = this.props.categoryToRender;
-        let trimmedURL = api_url.split("wp-json")[0];
-        let fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}&_embed`;
-        let fetchURL = `${trimmedURL}${fetchParams}`;
+        const { api_url, categoryToRender: categoryID } = this.props;
+        const trimmedURL = api_url.split("wp-json")[0];
+        const fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}&_embed`;
+        const fetchURL = `${trimmedURL}${fetchParams}`;
         axios.get(fetchURL)
         .then(res => {
             this.setState({
@@ -28,6 +27,19 @@ export default class AllPosts extends Component{
             })
         })
     }    
+
+    componentDidMount(){
+        document.addEventListener("keyup", (event) =>{
+            if(event.key === "Escape"){
+                this.handleClearSearchBox();
+            }
+        } )
+    }
+
+    // attached to the escape key using componentDidMount()
+    handleClearSearchBox = () => {
+        this.setState({filterValue: ""})
+    }
 
     stripHTML = (indexOrData) => {
         let rawData;
@@ -56,7 +68,8 @@ export default class AllPosts extends Component{
 
       filterItems(){
         const { postData, filterValue } = this.state;
-        const sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
+        let sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
+        console.log(sortedFilteredPosts)
         return sortedFilteredPosts;
       }
 
@@ -89,15 +102,15 @@ render(){
             {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
                 key={this.filterItems()[index].id === undefined ? null : this.filterItems()[index].id}
-                filmTitle={this.filterItems()[index].title.rendered.toUpperCase() === undefined ? null : this.filterItems()[index].title.rendered.toUpperCase()}
-                filmExcerpt={this.stripHTML(this.filterItems()[index].excerpt.rendered) === undefined ? null : this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
+                filmTitle={this.filterItems()[index].title.rendered === undefined ? null : this.filterItems()[index].title.rendered.toUpperCase()}
+                filmExcerpt={this.stripHTML(this.filterItems()[index]) === undefined ? null : this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
                 filmImage={this.filterItems()[index]._embedded['wp:featuredmedia'] === undefined ? null : this.filterItems()[index]._embedded['wp:featuredmedia'][0].source_url}
                 filmLink={this.filterItems()[index].link === undefined ? null : this.filterItems()[index].link}
             />)}
-                
             </div>
         )
     }
+
 
     return(
         <div>
