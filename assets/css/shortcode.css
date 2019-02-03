@@ -127,6 +127,7 @@
 .filmExcerpt{
     font-size: 32px;
     line-height: 1.5;
+    padding-top: 0px;
     text-transform: uppercase;
     font-family: 'Open Sans Condensed', sans-serif;
 }
@@ -135,6 +136,11 @@
     font-weight: bold;
     font-family: 'Open Sans Condensed', sans-serif;
     font-size: 50px;
+    padding-bottom: 0px;
+}
+
+#filmTitleID{
+    align-items: center;
 }
 
 .filmDivider{
@@ -143,25 +149,39 @@
     visibility: hidden;
 }
 
-.filmCategories{
-    color: #1e1e1e;
-    background: #fff195;
-    padding: 2px;
-    font-weight: bold;
-}
-
 .noPostsFound{
     text-align: center;
     margin: 0 auto;
 }
 .titleAndDescription{
-    animation: titleDescFrames 2s ease-in-out 0s forwards 1;
+    animation: titleDescFrames 0.5s ease-in-out 0s forwards 1;
 }
 /*Category CSS */
 .titleAndCategory{
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center !important;
+}
+
+.filmCategories{
+    background: #fff195;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #1e1e1e;
+    font-size: 22px;
+    padding: 8px !important;
+    margin: 5px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.filmCategories:empty{display: none !important}
+
+.resultsFoundText{
+    color: #f2f2f2;
+    text-transform: capitalize;
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
+    font-size: 28px;
 }
 
 .categoryLinks{
@@ -177,6 +197,17 @@
     font-size: 22px;
     padding: 8px;
     margin: 5px;
+    border-radius: 5px;
+}
+
+.categoryLinkActive{
+    background: #fff195;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #1e1e1e;
+    font-size: 22px;
+    padding: 8px;
+    margin: 5px;
+    font-weight: bold;
     border-radius: 5px;
 }
 

@@ -5,6 +5,7 @@ import axios from "axios";
 import Loading from "../Loading/Loading";
 import Post from "../Post/Post";
 import SearchBar from "../SearchBar/SearchBar";
+import { throws } from "assert";
 
 export default class AllPosts extends Component{
 
@@ -12,7 +13,10 @@ export default class AllPosts extends Component{
         postData: [],
         dataFetched: false,
         filterValue: "",
-        categoryData: null
+        categoryData: null,
+        categoryFilter: null,
+        categoryFilterNoResults: false,
+        activeCategory: "ALL"
     } 
 
     // call API, get categories and store in state
@@ -22,7 +26,7 @@ export default class AllPosts extends Component{
         let fetchURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
         axios.get(fetchURL)
         .then(res => {
-            let categoryData = {};
+            let categoryData = {1: "ALL"};
             for(let i = 0; i < res.data.length; i++){
                 if(res.data[i].name === "Uncategorised") continue;
                 categoryData[res.data[i].id] = res.data[i].name; 
@@ -52,23 +56,14 @@ export default class AllPosts extends Component{
         } )
     }
 
-    componentWillUnmount(){
-        document.removeEventListener("keydown");
-    }
-
     // attached to the escape key using componentDidMount()
-    handleClearSearchBox = () => {
-        this.setState({filterValue: ""})
-    }
+    handleClearSearchBox = () => this.setState({filterValue: ""})
 
     stripHTML = indexOrData => {
         let rawData;
-
         if(Number.isInteger(indexOrData)){
             rawData = this.state.postData[indexOrData].excerpt.rendered;
-        }else{
-            rawData = indexOrData;
-        }
+        }else{rawData = indexOrData}
         return new DOMParser()
           .parseFromString(rawData, 'text/html')
           .body
@@ -86,25 +81,31 @@ export default class AllPosts extends Component{
           return categoryNames;
       }
 
-    prevToggled = () => {
-        console.log("Previous toggled");
-    }
-
-    nextToggled = () => {
-        console.log("Next toggled");
-    }
-
+    paginationToggled = event => {let el = event.target.name;console.log(`${el} has been fired!`)}
+    
     filterChangeHandler = e => this.setState({ filterValue: e.target.value.toUpperCase()});
 
-    filterItems(){
+    // TEXT SEARCH
+    filterItems = () =>{
     const { postData, filterValue } = this.state;
     let sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
     return sortedFilteredPosts;
     }
+    // CATEGORY <a> TAGS </a> SEARCH
+    categoryFilterItems = () =>{
+        let { postData, categoryFilter } = this.state;
+        let filteredCategories = postData.filter(category =>{
+            return category.categories[1] == categoryFilter
+        })
+        return filteredCategories
+    }
 
-    categoryFilter = event => {
-        let element = event.target.name;
-        console.log(`${element} clicked!`)
+    categoryFilterHandler = event => {
+        let element = event.target.name
+        let catStateObj = this.state.categoryData;
+        let catId = Object.keys(catStateObj).find(key  => catStateObj[key] === element)
+        if(element === "ALL") catId = null;
+        this.setState({categoryFilter: catId, activeCategory: event.target.name})
     }
 
 render(){
@@ -125,9 +126,9 @@ render(){
 
     if(this.state.filterValue !== ""){
         return(
-            <div>
+            <React.Fragment>
                 <div className="uneekGallerySearchBarContainer">
-                    <SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/>
+                    <SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler} />
                 </div>
             {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
@@ -138,17 +139,40 @@ render(){
                 filmLink={this.filterItems()[index].link === undefined ? null : this.filterItems()[index].link}
                 filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(index)}
             />)}
-            </div>
+            </React.Fragment>
         )
     }
 
+    if(this.state.categoryFilter !== null){
+        return(
+            <React.Fragment>
+                <div className="uneekGallerySearchBarContainer">
+                    <SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler}/>
+                </div>
+                <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
+            {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
+                <a className={this.state.activeCategory == this.state.categoryData[key] ? "categoryLinkActive" : "categoryLink"} onClick={this.categoryFilterHandler} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
+            </div>
+            {/* filtered film results */}
+            {this.categoryFilterItems().map((post, index) => <Post
+                key={this.categoryFilterItems()[index].id === undefined ? null : this.categoryFilterItems()[index].id}
+                filmTitle={this.categoryFilterItems()[index].title.rendered === undefined ? null : this.categoryFilterItems()[index].title.rendered.toUpperCase()}
+                filmExcerpt={this.stripHTML(this.categoryFilterItems()[index]) === undefined ? null : this.stripHTML(this.categoryFilterItems()[index].excerpt.rendered)}  
+                filmImage={this.categoryFilterItems()[index]._embedded['wp:featuredmedia'] === undefined ? null : this.categoryFilterItems()[index]._embedded['wp:featuredmedia'][0].source_url}
+                filmLink={this.categoryFilterItems()[index].link === undefined ? null : this.categoryFilterItems()[index].link}
+                //filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(this.categoryFilterItems()[index])}
+            />)}
+            {<h4 className="resultsFoundText">{`${this.categoryFilterItems().length} ${this.categoryFilterItems().length === 1 ? "RESULT" : "RESULTS"} FOUND`}</h4>}
+            </React.Fragment>
+        )
+    }
 
     return(
-        <div>
-        {this.props.showSearchBar ? <div className="uneekGallerySearchBarContainer"><SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/></div> : null}
-            <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
+        <React.Fragment>
+        {<div className="uneekGallerySearchBarContainer"><SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler}/></div>}
+        <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
             {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
-                <a className="categoryLink" onClick={this.categoryFilter} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
+                <a className={this.state.activeCategory == this.state.categoryData[key] ? "categoryLinkActive" : "categoryLink"} onClick={this.categoryFilterHandler} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
             </div>
         {this.state.postData.map((post, index) => <Post
             key={this.state.postData[index].id === undefined ? null : this.state.postData[index].id}
@@ -161,16 +185,18 @@ render(){
             <div className="nextPrevBar">
                 <div className="nextPrevLinks">
                     <a
-                    onClick={this.prevToggled}
+                    name="PREV"
+                    onClick={this.paginationToggled}
                     >PREV</a>
                 </div>
                 <div className="nextPrevLinks">
                     <a
-                    onClick={this.nextToggled}
+                    name="NEXT"
+                    onClick={this.paginationToggled}
                     >NEXT</a>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     )
 }
 

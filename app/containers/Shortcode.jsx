@@ -46,9 +46,8 @@ export default class Shortcode extends Component {
       );
     }
 
-    componentDidMount(){
-      this.setState({loadingPage: false})
-    }
+    componentDidMount(){this.setState({loadingPage: false})}
+    
   render() {
 
     if(this.state.loadingPage){

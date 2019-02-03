@@ -28,7 +28,7 @@ class Post extends Component{
             /></a>
             <div className="titleAndDescription">
             <div className="titleAndCategory">
-                <h1 className="ds-grid-item filmTitle">{this.props.filmTitle}</h1>
+                <h1 id="filmTitleID"className="ds-grid-item filmTitle">{this.props.filmTitle}</h1>
                 <p className="filmCategories" >{this.props.filmCategories}</p>
             </div>
                 <p className="ds-grid-item filmExcerpt">{this.props.filmExcerpt}</p>
