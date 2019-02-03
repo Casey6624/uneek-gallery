@@ -125,7 +125,7 @@
 }
 
 .filmExcerpt{
-    font-size: 35px;
+    font-size: 32px;
     line-height: 1.5;
     text-transform: uppercase;
     font-family: 'Open Sans Condensed', sans-serif;
@@ -144,7 +144,6 @@
 }
 
 .filmCategories{
-    float: right;
     color: #1e1e1e;
     background: #fff195;
     padding: 2px;
@@ -155,11 +154,43 @@
     text-align: center;
     margin: 0 auto;
 }
-
 .titleAndDescription{
     animation: titleDescFrames 2s ease-in-out 0s forwards 1;
 }
+/*Category CSS */
+.titleAndCategory{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.categoryLinks{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.categoryLink{
+    background: #1e1e1e;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #f2f2f2;
+    font-size: 22px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.categoryLink:hover{
+    color: #fff195;
+    cursor: pointer;
+}
+
+#filterByStageLabel{
+    padding: 8px;
+    margin: 5px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: bold;
+}
 
 /* END OF FILM ELEMENTS */
 /*----------------------*/
@@ -184,7 +215,7 @@
 
 #uneekGallerySearchBar{
     padding: 12px 20px;
-    font-size: 25px;
+    font-size: 22px;
     font-family: 'Open Sans Condensed', sans-serif;
     animation: searchbarFrames 1s ease-in-out 0s forwards 1;
     color: #1e1e1e;

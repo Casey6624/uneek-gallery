@@ -86,31 +86,32 @@ export default class AllPosts extends Component{
           return categoryNames;
       }
 
-      prevToggled = () => {
-          console.log("Previous toggled");
-      }
+    prevToggled = () => {
+        console.log("Previous toggled");
+    }
 
-      nextToggled = () => {
-          console.log("Next toggled");
-      }
+    nextToggled = () => {
+        console.log("Next toggled");
+    }
 
-      filterChangeHandler = e => this.setState({ filterValue: e.target.value.toUpperCase()});
+    filterChangeHandler = e => this.setState({ filterValue: e.target.value.toUpperCase()});
 
-      filterItems(){
-        const { postData, filterValue } = this.state;
-        let sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
-        return sortedFilteredPosts;
-      }
+    filterItems(){
+    const { postData, filterValue } = this.state;
+    let sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
+    return sortedFilteredPosts;
+    }
+
+    categoryFilter = event => {
+        let element = event.target.name;
+        console.log(`${element} clicked!`)
+    }
 
 render(){
     if(!this.state.dataFetched && this.props.categoryToRender !== null){
         this.getCategories();
         this.getPosts();
-        return(
-            <div>
-                <Loading />
-            </div>
-        )
+        return(<div><Loading /></div>)
     }
 
     if(this.state.dataFetched && this.state.postData.length === 0){
@@ -127,9 +128,6 @@ render(){
             <div>
                 <div className="uneekGallerySearchBarContainer">
                     <SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/>
-                    <ul>
-                        {/* ADD NAV LINKS HERE! */}
-                    </ul>
                 </div>
             {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
@@ -148,6 +146,10 @@ render(){
     return(
         <div>
         {this.props.showSearchBar ? <div className="uneekGallerySearchBarContainer"><SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/></div> : null}
+            <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
+            {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
+                <a className="categoryLink" onClick={this.categoryFilter} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
+            </div>
         {this.state.postData.map((post, index) => <Post
             key={this.state.postData[index].id === undefined ? null : this.state.postData[index].id}
             filmTitle={this.state.postData[index].title.rendered === undefined ? null : this.state.postData[index].title.rendered.toUpperCase()}

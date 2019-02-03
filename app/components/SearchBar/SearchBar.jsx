@@ -10,7 +10,7 @@ const SearchBar = ({value, onChange}) => {
           style={{
             textAlign: "center"
           }}
-          placeholder="SEARCH FOR A PRODUCTION..."
+          placeholder="SEARCH BY PRODUCTION NAME"
           value={value}
           onChange={onChange}
         />

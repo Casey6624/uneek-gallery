@@ -2,31 +2,20 @@ import React, {Component} from "react";
 
 class Post extends Component{
 
-    constructor(props){
-        super(props);
-
-        this.state = {
+        state = {
             btnActive: false,
             imgHover: false
         }
 
-    }
+    
 
-    btnHoverOn = () => {
-        this.setState({btnActive: true});
-    }
+    btnHoverOn = () => this.setState({btnActive: true});
 
-    btnHoverOff = () => {
-        this.setState({btnActive: false});
-    }
+    btnHoverOff = () => this.setState({btnActive: false});
 
-    imgHoverOn = () => {
-        this.setState({imgHover: true});
-    }
+    imgHoverOn = () => this.setState({imgHover: true});
 
-    imgHoverOff = () => {
-        this.setState({imgHover: false});
-    }
+    imgHoverOff = () => this.setState({imgHover: false});
 
     render(){
         return(
@@ -38,8 +27,10 @@ class Post extends Component{
             onMouseLeave={this.imgHoverOff}
             /></a>
             <div className="titleAndDescription">
+            <div className="titleAndCategory">
                 <h1 className="ds-grid-item filmTitle">{this.props.filmTitle}</h1>
                 <p className="filmCategories" >{this.props.filmCategories}</p>
+            </div>
                 <p className="ds-grid-item filmExcerpt">{this.props.filmExcerpt}</p>
                 <br />
 
