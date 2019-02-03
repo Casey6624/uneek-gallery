@@ -39,13 +39,14 @@ class Post extends Component{
             /></a>
             <div className="titleAndDescription">
                 <h1 className="ds-grid-item filmTitle">{this.props.filmTitle}</h1>
+                <p className="filmCategories" >{this.props.filmCategories}</p>
                 <p className="ds-grid-item filmExcerpt">{this.props.filmExcerpt}</p>
                 <br />
 
                 <a className={this.state.btnActive ? "ds-grid-item btnViewFilmHover" : "ds-grid-item btnViewFilm"} href={this.props.filmLink} 
             onMouseEnter={this.btnHoverOn}
             onMouseLeave={this.btnHoverOff}
-            >VIEW FILM</a>
+            >MORE INFO</a>
             </div>
             <br/>
             <hr className="filmDivider" />

@@ -11,14 +11,30 @@ export default class AllPosts extends Component{
     state = {
         postData: [],
         dataFetched: false,
-        filterValue: ""
+        filterValue: "",
+        categoryData: null
     } 
 
+    // call API, get categories and store in state
+    getCategories = () => {
+        const { api_url, categoryToRender: categoryID } = this.props;
+        const trimmedURL = api_url.split("wp-json")[0];
+        let fetchURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
+        axios.get(fetchURL)
+        .then(res => {
+            let categoryData = {};
+            for(let i = 0; i < res.data.length; i++){
+                if(res.data[i].name === "Uncategorised") continue;
+                categoryData[res.data[i].id] = res.data[i].name; 
+            }
+            this.setState({ categoryData })
+        })
+    }
+    // call API, get posts and store in state
     getPosts = () => {
         const { api_url, categoryToRender: categoryID } = this.props;
         const trimmedURL = api_url.split("wp-json")[0];
-        const fetchParams = `wp-json/wp/v2/posts?categories=${categoryID}&_embed`;
-        const fetchURL = `${trimmedURL}${fetchParams}`;
+        const fetchURL = `${trimmedURL}wp-json/wp/v2/posts?categories=${categoryID}&_embed`;
         axios.get(fetchURL)
         .then(res => {
             this.setState({
@@ -29,11 +45,15 @@ export default class AllPosts extends Component{
     }    
 
     componentDidMount(){
-        document.addEventListener("keyup", (event) =>{
+        document.addEventListener("keydown", (event) =>{
             if(event.key === "Escape"){
                 this.handleClearSearchBox();
             }
         } )
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown");
     }
 
     // attached to the escape key using componentDidMount()
@@ -41,7 +61,7 @@ export default class AllPosts extends Component{
         this.setState({filterValue: ""})
     }
 
-    stripHTML = (indexOrData) => {
+    stripHTML = indexOrData => {
         let rawData;
 
         if(Number.isInteger(indexOrData)){
@@ -54,6 +74,16 @@ export default class AllPosts extends Component{
           .body
           .textContent
           .trim()
+      }
+
+      assignCategories = index => {
+          let catFromState = this.state.postData[index].categories;
+          let categoryNames = "";
+          for(let i = 1; i < catFromState.length; i++){
+              categoryNames += this.state.categoryData[catFromState[i]];
+              if(i !== catFromState.length -1)categoryNames += " | ";
+          }
+          return categoryNames;
       }
 
       prevToggled = () => {
@@ -69,13 +99,12 @@ export default class AllPosts extends Component{
       filterItems(){
         const { postData, filterValue } = this.state;
         let sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
-        console.log(sortedFilteredPosts)
         return sortedFilteredPosts;
       }
 
 render(){
-
     if(!this.state.dataFetched && this.props.categoryToRender !== null){
+        this.getCategories();
         this.getPosts();
         return(
             <div>
@@ -98,6 +127,9 @@ render(){
             <div>
                 <div className="uneekGallerySearchBarContainer">
                     <SearchBar value={this.state.filterValue} onChange={this.filterChangeHandler}/>
+                    <ul>
+                        {/* ADD NAV LINKS HERE! */}
+                    </ul>
                 </div>
             {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
@@ -106,6 +138,7 @@ render(){
                 filmExcerpt={this.stripHTML(this.filterItems()[index]) === undefined ? null : this.stripHTML(this.filterItems()[index].excerpt.rendered)}  
                 filmImage={this.filterItems()[index]._embedded['wp:featuredmedia'] === undefined ? null : this.filterItems()[index]._embedded['wp:featuredmedia'][0].source_url}
                 filmLink={this.filterItems()[index].link === undefined ? null : this.filterItems()[index].link}
+                filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(index)}
             />)}
             </div>
         )
@@ -121,6 +154,7 @@ render(){
             filmExcerpt={this.stripHTML(index) === undefined ? null : this.stripHTML(index)}    
             filmImage={this.state.postData[index]._embedded['wp:featuredmedia'] === undefined ? null : this.state.postData[index]._embedded['wp:featuredmedia'][0].source_url}
             filmLink={this.state.postData[index].link === undefined ? null : this.state.postData[index].link}
+            filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(index)}
         />)}
             <div className="nextPrevBar">
                 <div className="nextPrevLinks">

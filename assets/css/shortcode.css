@@ -114,10 +114,10 @@
 .btnViewFilmHover{
     background-color: white;
     color: #1e1e1e;
-    padding: 14px 25px;
+    padding: 18px 28px;
     text-align: center; 
     text-decoration: none;
-    border: #1e1e1e 5px solid;
+    border: #1e1e1e 1px solid;
     display: inline-block;
     margin-left: 18px;
     border-radius: 10px;
@@ -141,6 +141,14 @@
     border: 2px solid #1e1e1e;
     width: 100%;
     visibility: hidden;
+}
+
+.filmCategories{
+    float: right;
+    color: #1e1e1e;
+    background: #fff195;
+    padding: 2px;
+    font-weight: bold;
 }
 
 .noPostsFound{
@@ -176,7 +184,8 @@
 
 #uneekGallerySearchBar{
     padding: 12px 20px;
-    font-size: 16px;
+    font-size: 25px;
+    font-family: 'Open Sans Condensed', sans-serif;
     animation: searchbarFrames 1s ease-in-out 0s forwards 1;
     color: #1e1e1e;
 }
