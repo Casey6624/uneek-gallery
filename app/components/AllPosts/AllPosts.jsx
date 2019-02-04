@@ -16,10 +16,38 @@ export default class AllPosts extends Component{
         categoryData: null,
         categoryFilter: null,
         categoryFilterNoResults: false,
-        activeCategory: "ALL"
+        activeCategory: "ALL",
+        parentCategory: null
     } 
-
     // call API, get categories and store in state
+/*     getCategories = () => {
+        const { api_url, categoryToRender: categoryID } = this.props;
+        const trimmedURL = api_url.split("wp-json")[0];
+        let fetchURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
+        let categoryData = {1: "ALL"};
+        axios.get(fetchURL)
+        .then(res => {
+            for(let i = 0; i < res.data.length; i++){
+                if(res.data[i].name === "Uncategorised") continue;
+                categoryData[res.data[i].id] = res.data[i].name; 
+            }
+            return axios.get(`${trimmedURL}wp-json/wp/v2/categories/${categoryID}`)
+        })
+        .then(res => {
+            console.log(categoryData)
+            this.setState({ parentCategory: res.data.name, categoryData})
+        })
+    } */
+
+    getParentCategory = () => {
+        const { api_url, categoryToRender: categoryID } = this.props;
+        const trimmedURL = api_url.split("wp-json")[0];
+        axios.get(`${trimmedURL}wp-json/wp/v2/categories/${categoryID}`)
+        .then( res => {
+            this.setState({ parentCategory: res.data.name })
+        })
+    }
+
     getCategories = () => {
         const { api_url, categoryToRender: categoryID } = this.props;
         const trimmedURL = api_url.split("wp-json")[0];
@@ -33,7 +61,9 @@ export default class AllPosts extends Component{
             }
             this.setState({ categoryData })
         })
+        this.getParentCategory();
     }
+
     // call API, get posts and store in state
     getPosts = () => {
         const { api_url, categoryToRender: categoryID } = this.props;
@@ -43,7 +73,7 @@ export default class AllPosts extends Component{
         .then(res => {
             this.setState({
                 postData: res.data,
-                dataFetched: true
+                dataFetched: true,
             })
         })
     }    
@@ -72,14 +102,15 @@ export default class AllPosts extends Component{
       }
 
       assignCategories = index => {
-          let catFromState = this.state.postData[index].categories;
-          let categoryNames = "";
-          for(let i = 1; i < catFromState.length; i++){
-              categoryNames += this.state.categoryData[catFromState[i]];
-              if(i !== catFromState.length -1)categoryNames += " | ";
-          }
-          return categoryNames;
-      }
+        let catFromState = this.state.postData[index].categories;
+        let categoryNames = "";
+        for(let i = 0; i < catFromState.length; i++){
+            if(this.state.categoryData[catFromState[i]] == this.state.parentCategory) continue
+            if(this.state.categoryData[catFromState[i]] == undefined) continue
+            categoryNames += this.state.categoryData[catFromState[i]];
+        }
+        return categoryNames;
+    }
 
     paginationToggled = event => {let el = event.target.name;console.log(`${el} has been fired!`)}
     
@@ -95,7 +126,14 @@ export default class AllPosts extends Component{
     categoryFilterItems = () =>{
         let { postData, categoryFilter } = this.state;
         let filteredCategories = postData.filter(category =>{
-            return category.categories[1] == categoryFilter
+            // making this [0] fixes crowd funding category filter
+            let categoryFinal;
+            for(let i = 0; i < category.categories.length; i++){
+                if (category.categories[i] == this.props.categoryToRender) continue
+                if (category.categories[i] == undefined) continue
+                categoryFinal = category.categories[i]
+            }
+            return categoryFinal == categoryFilter
         })
         return filteredCategories
     }
@@ -139,6 +177,7 @@ render(){
                 filmLink={this.filterItems()[index].link === undefined ? null : this.filterItems()[index].link}
                 filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(index)}
             />)}
+            {<h4 className="resultsFoundText">{`${this.filterItems().length} ${this.filterItems().length === 1 ? "RESULT" : "RESULTS"} FOUND`}</h4>}
             </React.Fragment>
         )
     }

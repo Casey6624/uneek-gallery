@@ -221,6 +221,7 @@
     margin: 5px;
     font-family: 'Open Sans Condensed', sans-serif;
     font-weight: bold;
+    animation: titleDescFrames 1s ease-in-out 0s forwards 1;
 }
 
 /* END OF FILM ELEMENTS */
