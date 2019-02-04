@@ -140,6 +140,8 @@ export default class AllPosts extends Component{
 
     categoryFilterHandler = event => {
         let element = event.target.name
+        // if null name then use value (for dropdown list)
+        if(!element) element = event.target.value
         let catStateObj = this.state.categoryData;
         let catId = Object.keys(catStateObj).find(key  => catStateObj[key] === element)
         if(element === "ALL") catId = null;
@@ -191,6 +193,12 @@ render(){
                 <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
             {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
                 <a className={this.state.activeCategory == this.state.categoryData[key] ? "categoryLinkActive" : "categoryLink"} onClick={this.categoryFilterHandler} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
+            
+            <select className="categoryLinksDropDown" onChange={this.categoryFilterHandler}>
+            {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
+                <option key={this.state.categoryData[key]} value={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</option>
+                )}
+            </select>
             </div>
             {/* filtered film results */}
             {this.categoryFilterItems().map((post, index) => <Post
@@ -212,6 +220,13 @@ render(){
         <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
             {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
                 <a className={this.state.activeCategory == this.state.categoryData[key] ? "categoryLinkActive" : "categoryLink"} onClick={this.categoryFilterHandler} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
+            
+            <select className="categoryLinksDropDown" onChange={this.categoryFilterHandler}>
+            {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
+                <option key={this.state.categoryData[key]} value={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</option>
+                )}
+            </select>
+
             </div>
         {this.state.postData.map((post, index) => <Post
             key={this.state.postData[index].id === undefined ? null : this.state.postData[index].id}

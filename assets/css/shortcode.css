@@ -52,6 +52,22 @@
     }
 }
 
+@media only screen and (max-width: 1240px){
+    .categoryLink{
+        text-align: center;
+        margin: 10px;
+    }
+}
+
+@media only screen and (max-width: 1050px){
+    .categoryLinks a{
+        display: none;
+    }
+    .categoryLinksDropDown, #filterByStageLabel{
+        visibility: visible !important;
+    }
+}
+
 @media only screen and (max-width: 800px){
     .filmExcerpt{
         font-size: 18px !important;
@@ -64,6 +80,10 @@
         font-size: 16px !important;
         font-family: 'Open Sans Condensed', sans-serif;
     }
+    #uneekGallerySearchBar{
+        width: 100%;
+        padding: 0 10px 0 10px;
+    }
 }
 
 @media only screen and (max-width: 600px){
@@ -75,9 +95,36 @@
 
 @media only screen and (max-width: 500px){
     .filmListHeader{
-        font-size: 35px !important;
+        font-size: 40px !important;
         font-family: 'Open Sans Condensed', sans-serif;
     }
+    .titleAndCategory{
+        display: grid !important;
+        text-align: center;
+    }
+    .filmCategories{
+        width: 50%;
+        text-align: center;
+        margin-left: 22px !important;
+    }
+}
+
+@media only screen and (max-width: 550px){
+    #uneekGallerySearchBar{
+        font-size: 18px !important;
+    }
+}
+@media only screen and (max-width: 515px){
+.categoryLinks{
+    display: grid !important;
+}
+
+}
+@media only screen and (max-width: 400px){
+
+.filmExcerpt{
+    width: 90%;
+}
 }
 
 
@@ -182,6 +229,7 @@
     font-family: 'Open Sans Condensed', sans-serif;
     text-align: center;
     font-size: 28px;
+    padding: 15px;
 }
 
 .categoryLinks{
@@ -198,6 +246,10 @@
     padding: 8px;
     margin: 5px;
     border-radius: 5px;
+}
+
+.categoryLinksDropDown{
+    visibility: hidden;
 }
 
 .categoryLinkActive{
@@ -221,6 +273,7 @@
     margin: 5px;
     font-family: 'Open Sans Condensed', sans-serif;
     font-weight: bold;
+    visibility: hidden;
     animation: titleDescFrames 1s ease-in-out 0s forwards 1;
 }
 
@@ -251,6 +304,13 @@
     font-family: 'Open Sans Condensed', sans-serif;
     animation: searchbarFrames 1s ease-in-out 0s forwards 1;
     color: #1e1e1e;
+}
+
+.categoryLinksDropDown{
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #1e1e1e;
+    font-size: 22px;
+    border-radius: 15px;
 }
 
 /*    END OF Searchbar  */
