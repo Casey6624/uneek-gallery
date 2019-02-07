@@ -219,20 +219,7 @@ render(){
             filmLink={this.state.postData[index].link === undefined ? null : this.state.postData[index].link}
             filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(index)}
         />)}
-            <div className="nextPrevBar">
-                <div className="nextPrevLinks">
-                    <a
-                    name="PREV"
-                    onClick={this.paginationToggled}
-                    >PREV</a>
-                </div>
-                <div className="nextPrevLinks">
-                    <a
-                    name="NEXT"
-                    onClick={this.paginationToggled}
-                    >NEXT</a>
-                </div>
-            </div>
+        {<h4 className="resultsFoundText">{`${this.state.postData.length} ${this.state.postData.length === 1 ? "RESULT" : "RESULTS"} FOUND FOR ${this.state.activeCategory}`}</h4>}
         </React.Fragment>
     )
 }
