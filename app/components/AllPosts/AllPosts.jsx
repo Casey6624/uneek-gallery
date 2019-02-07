@@ -19,25 +19,6 @@ export default class AllPosts extends Component{
         activeCategory: "ALL",
         parentCategory: null
     } 
-    // call API, get categories and store in state
-/*     getCategories = () => {
-        const { api_url, categoryToRender: categoryID } = this.props;
-        const trimmedURL = api_url.split("wp-json")[0];
-        let fetchURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
-        let categoryData = {1: "ALL"};
-        axios.get(fetchURL)
-        .then(res => {
-            for(let i = 0; i < res.data.length; i++){
-                if(res.data[i].name === "Uncategorised") continue;
-                categoryData[res.data[i].id] = res.data[i].name; 
-            }
-            return axios.get(`${trimmedURL}wp-json/wp/v2/categories/${categoryID}`)
-        })
-        .then(res => {
-            console.log(categoryData)
-            this.setState({ parentCategory: res.data.name, categoryData})
-        })
-    } */
 
     getParentCategory = () => {
         const { api_url, categoryToRender: categoryID } = this.props;
@@ -81,11 +62,13 @@ export default class AllPosts extends Component{
     componentDidMount(){
         document.addEventListener("keydown", (event) =>{
             if(event.key === "Escape"){
-                this.handleClearSearchBox();
+                this.handleClearSearchBox(event);
             }
+            /* if(event.key === "ArrowLeft" || event.key === "ArrowRight"){
+                this.arrowKeyCategoryHandler(event);
+            } */
         } )
     }
-
     // attached to the escape key using componentDidMount()
     handleClearSearchBox = () => this.setState({filterValue: ""})
 
@@ -145,7 +128,7 @@ export default class AllPosts extends Component{
         let catStateObj = this.state.categoryData;
         let catId = Object.keys(catStateObj).find(key  => catStateObj[key] === element)
         if(element === "ALL") catId = null;
-        this.setState({categoryFilter: catId, activeCategory: event.target.name})
+        this.setState({categoryFilter: catId, activeCategory: element})
     }
 
 render(){
@@ -209,7 +192,7 @@ render(){
                 filmLink={this.categoryFilterItems()[index].link === undefined ? null : this.categoryFilterItems()[index].link}
                 //filmCategories={this.assignCategories(index) === undefined ? null : this.assignCategories(this.categoryFilterItems()[index])}
             />)}
-            {<h4 className="resultsFoundText">{`${this.categoryFilterItems().length} ${this.categoryFilterItems().length === 1 ? "RESULT" : "RESULTS"} FOUND`}</h4>}
+            {<h4 className="resultsFoundText">{`${this.categoryFilterItems().length} ${this.categoryFilterItems().length === 1 ? "RESULT" : "RESULTS"} FOUND FOR ${this.state.activeCategory}`}</h4>}
             </React.Fragment>
         )
     }

@@ -1,55 +1,28 @@
 import React from "react";
 
 const Loading = (props) => {
-
-    const fillColor = "#fff195";
     return(  
     
         <div className="SVGSpinner">
-        <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        xmlnsXlink="http://www.w3.org/1999/xlink" 
-        version={1.0} 
-        width="128px" 
-        height="128px" 
-        viewBox="0 0 128 128" 
-        xmlSpace="preserve"
-        >
-        <path 
-        fill={fillColor}
-        fillOpacity={1} d="M111.708,49A50.116,50.116,0,0,0,79,16.292V1.785A64.076,64.076,0,0,1,126.215,49H111.708ZM49,16.292A50.114,50.114,0,0,0,16.292,49H1.785A64.075,64.075,0,0,1,49,1.785V16.292ZM16.292,79A50.116,50.116,0,0,0,49,111.708v14.507A64.076,64.076,0,0,1,1.785,79H16.292ZM79,111.708A50.118,50.118,0,0,0,111.708,79h14.507A64.078,64.078,0,0,1,79,126.215V111.708Z">
-        <animateTransform 
-        attributeName="transform" 
-        type="rotate" 
-        from="0 64 64" 
-        to="-90 64 64" 
-        dur="1000ms" 
-        repeatCount="indefinite" />
-        </path>
-        <path 
-        fill={fillColor} 
-        fillOpacity={1} d="M96.971,53.633a34.634,34.634,0,0,0-22.6-22.6V21A44.283,44.283,0,0,1,107,53.633H96.971Zm-43.338-22.6a34.634,34.634,0,0,0-22.6,22.6H21A44.283,44.283,0,0,1,53.633,21V31.029Zm-22.6,43.338a34.634,34.634,0,0,0,22.6,22.6V107A44.283,44.283,0,0,1,21,74.367H31.029Zm43.338,22.6a34.634,34.634,0,0,0,22.6-22.6H107A44.283,44.283,0,0,1,74.367,107V96.971Z">
-        <animateTransform 
-        attributeName="transform" 
-        type="rotate" 
-        from="0 64 64" 
-        to="90 64 64" 
-        dur="1000ms" 
-        repeatCount="indefinite" />
-        </path>
-        <path 
-        fill={fillColor}
-        fillOpacity={1} d="M85.47,57.25A22.552,22.552,0,0,0,70.75,42.53V36A28.836,28.836,0,0,1,92,57.25H85.47ZM57.25,42.53A22.552,22.552,0,0,0,42.53,57.25H36A28.836,28.836,0,0,1,57.25,36V42.53ZM42.53,70.75A22.552,22.552,0,0,0,57.25,85.47V92A28.836,28.836,0,0,1,36,70.75H42.53ZM70.75,85.47A22.552,22.552,0,0,0,85.47,70.75H92A28.836,28.836,0,0,1,70.75,92V85.47Z">
-        <animateTransform 
-        attributeName="transform" 
-        type="rotate" 
-        from="0 64 64" 
-        to="-90 64 64" 
-        dur="1000ms" 
-        repeatCount="indefinite" />
-        </path>
-        
-        </svg>
+<svg xmlnssvg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="64px" height="64px" viewBox="0 0 128 128" xmlSpace="preserve">
+    <g>
+        <path d="M122.5 69.25H96.47a33.1 33.1 0 0 0 0-10.5h26.05a5.25 5.25 0 0 1 0 10.5z" fill="#fff195" />
+        <path d="M112.04 97.83L89.47 84.8a33.1 33.1 0 0 0 5.25-9.1l22.57 13.03a5.25 5.25 0 0 1-5.28 9.1z" fill="#fffbdf" />
+        <path d="M88.68 117.35L75.65 94.78a33.1 33.1 0 0 0 9.1-5.25l13.02 22.57a5.25 5.25 0 1 1-9.1 5.25z" fill="#fffbdf" />
+        <path d="M58.7 122.57V96.5a33.1 33.1 0 0 0 10.5 0v26.07a5.25 5.25 0 0 1-10.5 0z" fill="#fffbdf" />
+        <path d="M30.1 112.1l13.04-22.57a33.1 33.1 0 0 0 9.1 5.25L39.2 117.35a5.25 5.25 0 1 1-9.1-5.25z" fill="#fffbdf" />
+        <path d="M10.6 88.74L33.16 75.7a33.1 33.1 0 0 0 5.25 9.1L15.88 97.83a5.25 5.25 0 1 1-5.25-9.1z" fill="#fffbdf" />
+        <path d="M5.37 58.75h26.06a33.1 33.1 0 0 0 0 10.5H5.37a5.25 5.25 0 0 1 0-10.5z" fill="#fff9d5" />
+        <path d="M15.85 30.17L38.4 43.2a33.1 33.1 0 0 0-5.24 9.1L10.6 39.25a5.25 5.25 0 1 1 5.25-9.1z" fill="#fff8ca" />
+        <path d="M39.2 10.65l13.03 22.57a33.1 33.1 0 0 0-9.1 5.25l-13-22.57a5.25 5.25 0 1 1 9.1-5.25z" fill="#fff7bf" />
+        <path d="M69.2 5.43V31.5a33.1 33.1 0 0 0-10.5 0V5.42a5.25 5.25 0 1 1 10.5 0z" fill="#fff5b5" />
+        <path d="M97.77 15.9L84.75 38.47a33.1 33.1 0 0 0-9.1-5.25l13.03-22.57a5.25 5.25 0 1 1 9.1 5.25z" fill="#fff4aa" />
+        <path d="M117.3 39.26L94.7 52.3a33.1 33.1 0 0 0-5.25-9.1l22.57-13.03a5.25 5.25 0 0 1 5.25 9.1z" fill="#fff29f" />
+        <animateTransform attributeName="transform" type="rotate" values="0 64 64;30 64 64;60 64 64;90 64 64;120 64 64;150 64 64;180 64 64;210 64 64;240 64 64;270 64 64;300 64 64;330 64 64"
+            calcMode="discrete" dur="1080ms" repeatCount="indefinite"></animateTransform>
+    </g>
+</svg>
         </div>
 
         )
