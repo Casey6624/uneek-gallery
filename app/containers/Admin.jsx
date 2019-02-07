@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import fetchWP from '../utils/fetchWP';
 
 import Notice from "../components/Notice/Notice";
+import GithubLogo from "../components/GithubLogo/GithubLogo";
 
 export default class Admin extends Component {
   constructor(props) {
@@ -208,11 +209,14 @@ export default class Admin extends Component {
       <div className="wrap">
         {notice}
         <form>
-          <h1>Uneek Gallery Settings</h1>
+          <h1>UNEEK GALLERY SETTINGS</h1>
           <br/>
           <h3>Your Shortcode:&nbsp; <input type="text" value="[uneek-gallery]"/></h3>
-          <br/>
-          <h4>What would you like the title of the gallery to be?</h4>
+          <h4>How Does Uneek Gallery Work?</h4>
+          <p>
+            Uneek Gallery takes a user inputted category ID, pulls the posts which match the category ID over the REST API and displays them within a list. If you assign child categories to the parent category, then Uneek Gallery will automatically place each category into it's own sub list.
+          </p>
+          <h4>What would you like the title of the gallery to be? (Appears above the search bar.)</h4>
           <label> 
           Gallery Title: &nbsp;
             <input
@@ -241,9 +245,9 @@ export default class Admin extends Component {
           {/*-------------------------------------------------------------------------------------------------*/}
           <h4>Which category would you like to display on the gallery? <i>NOTE: You can list multiple categories by seperating the IDs with a comma (E.g "1, 4" would return categories 1 and 4 ).</i></h4>
           <label> 
-          Category ID: &nbsp;
+          Parent Category ID: &nbsp;
             <input
-              type="text"
+              type="number"
               name="category"
               value={this.state.category}
               placeholder="E.g Posts"
@@ -264,36 +268,21 @@ export default class Admin extends Component {
             className="button button-primary"
             onClick={this.handleSettingDelete}
           >Delete</button><br/><br/>
-          {/*-------------------------------------------------------------------------------------------------*/}
-          <h4>Would you like to enable a search bar so visitors can refine the list of posts?</h4>
-          <label> 
-          Show Search Bar?&nbsp;
-          <select 
-          type="search" 
-          onChange={this.updateSettingsInput} 
-          value={this.state.search}
-          name="search"
-          >
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
-          </select>&nbsp;
-          </label>
-
-          <button
-            id="save"
-            name="search"
-            className="button button-primary"
-            onClick={this.handleSettingSave}
-          >Save</button>&nbsp;
-
-          <button
-            id="delete"
-            name="search"
-            className="button button-primary"
-            onClick={this.handleSettingDelete}
-          >Delete</button>
-
         </form>
+        <hr />
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}>
+        <div style={{
+          margin: 10
+        }}>
+        <h2>Issues with Uneek Gallery or wish to contribute?</h2>
+        <h4><a href="https://github.com/Casey6624/uneek-gallery">Click Here To Open A Pull Request Or Fork the Github Project</a></h4>
+        </div>
+        <a href="https://github.com/Casey6624/uneek-gallery"><GithubLogo /></a>
+        </div>
       </div>
     );
   }
