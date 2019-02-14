@@ -7,3 +7,5 @@ Installation:
 2). Upload to WordPress via Plugins page
 
 3). enter Shortcode [uneek-gallery] on desired page
+
+![](GalleryExample.gif)
