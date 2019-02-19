@@ -39,11 +39,6 @@ export default class Shortcode extends Component {
         (json) => this.setState({categoryToRender: json.value}),
         (err) => this.setState({APIErrors: err, showCategoryError: true})
       );
-      this.fetchWP.get( 'adminSearch' )
-      .then(
-        (json) => this.setState({showSearchBar: json.value}),
-        (err) => this.setState({APIErrors: err})
-      );
     }
 
     componentDidMount(){this.setState({loadingPage: false})}
