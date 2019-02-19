@@ -78,17 +78,6 @@ function init() {
 add_action( 'plugins_loaded', 'Pangolin\\WPR\\init' );
 
 
-
-/**
- * Register the widget
- *
- * @since 1.0.0
- */
-function widget_init() {
-	return register_widget( new Widget );
-}
-add_action( 'widgets_init', 'Pangolin\\WPR\\widget_init' );
-
 /**
  * Register activation and deactivation hooks
  */

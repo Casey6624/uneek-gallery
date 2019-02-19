@@ -6,8 +6,7 @@ module.exports = (env, argv) => {
   return {
     entry: {
       'js/admin': path.resolve(__dirname, 'app/admin.js'),
-      'js/shortcode': path.resolve(__dirname, 'app/shortcode.js'),
-      'js/widget': path.resolve(__dirname, 'app/widget.js'),
+      'js/shortcode': path.resolve(__dirname, 'app/shortcode.js')
     },
 
     output: {
