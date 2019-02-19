@@ -16,8 +16,6 @@ export default class Admin extends Component {
       savedTitle: '',
       category: '',
       savedCategory: '',
-      search: '',
-      savedSearch: '',
       notice: false,
     };
 
@@ -65,18 +63,6 @@ export default class Admin extends Component {
         this.updateCategorySetting(settingsType);
       }
       break;
-      case "search":
-      if ( this.state.search === this.state.savedSearch ) {
-        this.setState({
-          notice: {
-            type: 'warning',
-            message: `Setting Unchanged: the ${settingsType} is already set to the inputted value.`
-          }
-        });
-      } else {
-        this.updateSearchSetting(settingsType);
-      }
-      break;
     }
   }
 
@@ -90,9 +76,6 @@ export default class Admin extends Component {
       break;
       case "category":
       this.deleteCategorySetting(settingType);
-      break;
-      case "search":
-      this.deleteSearchSetting(settingType);
       break;
     }
   }
@@ -124,14 +107,6 @@ export default class Admin extends Component {
       }),
       (err) => errors.push(err)
     );
-    this.fetchWP.get( 'adminSearch' )
-    .then(
-      (json) => this.setState({
-        search: json.value,
-        savedSearch: json.value
-      }),
-      (err) => errors.push(err)
-    );
   };
   // Validate and display setState errors if any issues
   processOkResponse = (json, action, settingType) => {
@@ -146,13 +121,6 @@ export default class Admin extends Component {
       case "category":
       if (json.success) {
         this.setState({category: json.value, savedCategory: json.value, notice: {type: 'success',message: `Setting ${action} successfully.`,}});
-      } else {
-        this.setState({notice: { type: 'error', message: `Setting was not ${action}.`,}});
-      }
-      break;
-      case "search":
-      if (json.success) {
-        this.setState({search: json.value, savedSearch: json.value, notice: {type: 'success',message: `Setting ${action} successfully.`,}});
       } else {
         this.setState({notice: { type: 'error', message: `Setting was not ${action}.`,}});
       }
@@ -185,18 +153,6 @@ export default class Admin extends Component {
     .then((json) => this.processOkResponse(json, 'deleted', settingType),(err) => console.log('error', err));
   }
 
-  // SEARCH API CALLS -----------------------------------------------------------------------------------------------
-
-  updateSearchSetting = (settingType) => {
-    this.fetchWP.post( 'adminSearch', { search: this.state.search } )
-    .then((json) => this.processOkResponse(json, 'saved', settingType),(err) => this.setState({
-        notice: {type: 'error', message: err.message}}));
-  }
-
-  deleteSearchSetting = (settingType) => {
-    this.fetchWP.delete( 'adminSearch' )
-    .then((json) => this.processOkResponse(json, 'deleted', settingType),(err) => console.log('error', err));
-  }
 
   render() {
     let notice;
@@ -214,7 +170,7 @@ export default class Admin extends Component {
           <h3>Your Shortcode:&nbsp; <input type="text" value="[uneek-gallery]"/></h3>
           <h4>How Does Uneek Gallery Work?</h4>
           <p>
-            Uneek Gallery takes a user inputted category ID, pulls the posts which match the category ID over the REST API and displays them within a list. If you assign child categories to the parent category, then Uneek Gallery will automatically place each category into it's own sub list.
+            Uneek Gallery takes a user inputted category ID, pulls the posts which match the category ID over the REST API and displays them within a list. If you assign child categories to the parent category, then Uneek Gallery will automatically place each category into its own sub list.
           </p>
           <h4>What would you like the title of the gallery to be? (Appears above the search bar.)</h4>
           <label> 
@@ -227,7 +183,7 @@ export default class Admin extends Component {
               onChange={this.updateSettingsInput}
             />&nbsp;
           </label>
-
+      
           <button
             id="save"
             name="title"
@@ -243,7 +199,7 @@ export default class Admin extends Component {
           >Delete</button>
           <br/><br/>
           {/*-------------------------------------------------------------------------------------------------*/}
-          <h4>Which category would you like to display on the gallery? <i>NOTE: You can list multiple categories by seperating the IDs with a comma (E.g "1, 4" would return categories 1 and 4 ).</i></h4>
+          <h4>Which category would you like to display on the gallery? <i>NOTE: You can list multiple categories by seperating the IDs with a comma (E.g 1, 4 would return categories 1 and 4 ).</i></h4>
           <label> 
           Parent Category ID: &nbsp;
             <input

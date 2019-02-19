@@ -23,15 +23,27 @@ export default class Shortcode extends Component {
       loadingPage: true,
       showCategoryError: false
     }
+
       this.getSettings();
+
   } 
 
   getSettings = () => {
       this.fetchWP.get( 'adminTitle' )
       .then(
-        (json) => this.setState({galleryHeader: json.value})
-        )
-      .catch((err) => this.setState({APIErrors: err}))
+        (json) => this.setState({galleryHeader: json.value}),
+        (err) => this.setState({APIErrors: err})
+        );
+      this.fetchWP.get( 'adminCategory' )
+      .then(
+        (json) => this.setState({categoryToRender: json.value}),
+        (err) => this.setState({APIErrors: err, showCategoryError: true})
+      );
+      this.fetchWP.get( 'adminSearch' )
+      .then(
+        (json) => this.setState({showSearchBar: json.value}),
+        (err) => this.setState({APIErrors: err})
+      );
     }
 
     componentDidMount(){this.setState({loadingPage: false})}
@@ -48,9 +60,7 @@ export default class Shortcode extends Component {
 
     return (
       <div className="uneek-container">
-
         <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
-        
         <AllPosts 
         api_url={this.props.wpObject.api_url}
         api_nonce={this.props.wpObject.api_nonce}
