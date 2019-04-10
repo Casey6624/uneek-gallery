@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
 
 /*------------------*/
 /*     CSS GRID     */
@@ -89,7 +90,7 @@
 @media only screen and (max-width: 600px){
     .filmListHeader{
         font-size: 55px !important;
-        font-family: 'Open Sans Condensed', sans-serif;
+        font-family: 'Amatic SC', cursive;
     }
 }
 
@@ -149,8 +150,8 @@
 
 .filmListHeader{
     text-align: center;
-    font-size: 5rem;
-    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 6rem;
+    font-family: 'Amatic SC', cursive;
 }
 
 .btnViewFilm{
