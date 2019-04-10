@@ -19,9 +19,8 @@ export default class Shortcode extends Component {
       galleryHeader: null,
       categoryToRender: null,
       showSearchBar: null,
-      APIErrors: [],
-      loadingPage: true,
-      showCategoryError: false
+      APIErrors: "",
+      loadingPage: true
     }
 
       this.getSettings();
@@ -30,18 +29,31 @@ export default class Shortcode extends Component {
 
   getSettings = () => {
       this.fetchWP.get( 'adminTitle' )
-      .then(
-        (json) => this.setState({galleryHeader: json.value}),
-        (err) => this.setState({APIErrors: err})
-        );
+      .then((json) => {
+        if(json.value){
+          console.log(json)
+          this.setState({galleryHeader: json.value})
+        }else{
+          console.log(json)
+        }
+      }
+      )
+      .catch((err) => this.setState({APIErrors: err}))
       this.fetchWP.get( 'adminCategory' )
-      .then(
-        (json) => this.setState({categoryToRender: json.value}),
-        (err) => this.setState({APIErrors: err, showCategoryError: true})
-      );
+      .then((json) =>{
+        if(json.value){
+          this.setState({categoryToRender: json.value}),
+          console.log(json)
+        }else{
+          console.log(json)
+          this.setState({APIErrors: "Please set a parent category in the settings menu!"})
+        }
+      }
+      )
+      .catch((err) => this.setState({ APIErrors: err }))
     }
 
-    componentDidMount(){this.setState({loadingPage: false})}
+    componentDidMount(){this.setState({ loadingPage: false })}
     
   render() {
 
@@ -56,14 +68,14 @@ export default class Shortcode extends Component {
     return (
       <div className="uneek-container">
         <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
+        {this.state.APIErrors === "" ? null : <p id="parentCatError"> <span id="parentCatErrorHighlight">ERROR:</span> {this.state.APIErrors}</p>}
         <AllPosts 
         api_url={this.props.wpObject.api_url}
-        api_nonce={this.props.wpObject.api_nonce}
+        api_nonce={this.props.wpObject.api_nonce} 
         categoryToRender={this.state.categoryToRender}
         showSearchBar={this.state.showSearchBar}
         showCategoryError={this.state.showCategoryError}
         />
-        {this.state.showCategoryError ? <p>Ooops!</p> : null}
       </div>
     );
   }

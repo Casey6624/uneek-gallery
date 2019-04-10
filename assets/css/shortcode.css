@@ -25,6 +25,10 @@
     justify-content: center;
 }
 
+.filmImage, .filmImageHover{
+width: auto;
+}
+
 @media only screen and (max-width: 1200px){
     .ds-grid {
         display: grid;
@@ -405,4 +409,18 @@
         background: #ff95b3;
         border: 20px solid #1e1e1e;
     }
+}
+
+/* Shortcode Misc CSS  */
+
+#parentCatError{
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 1rem;
+}
+
+#parentCatErrorHighlight{
+    font-weight: bold;
+    color: black;
 }
