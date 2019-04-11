@@ -1,42 +1,38 @@
-import React, {Component} from "react";
+/* eslint-disable react/prop-types */
+import React, { useState } from "react";
 
-class Post extends Component{
+export default function Post(props){
 
-        state = {
-            btnActive: false,
-            imgHover: false
-        }
+    const [btnActive, setBtnActive] = useState(false)
+    const [imgHover, setImgHover] = useState(false)
 
-    
+    // set button class on mouse in/mouse out
+    function btnHoverOn(){setBtnActive(true)}
+    function btnHoverOff(){setBtnActive(false)}
 
-    btnHoverOn = () => this.setState({btnActive: true});
+    // set img class on mouse in/mouse out
+    function imgHoverOn(){setImgHover(true)}
+    function imgHoverOff(){setImgHover(false)}
 
-    btnHoverOff = () => this.setState({btnActive: false});
-
-    imgHoverOn = () => this.setState({imgHover: true});
-
-    imgHoverOff = () => this.setState({imgHover: false});
-
-    render(){
         return(
             <div className="ds-grid">
-            <a href={this.props.filmLink}><img 
-            className={this.state.imgHover ? "ds-grid-item filmImageHover" : "ds-grid-item filmImage"} 
-            src={this.props.filmImage}
-            onMouseEnter={this.imgHoverOn}
-            onMouseLeave={this.imgHoverOff}
+            <a href={props.filmLink}><img 
+            className={imgHover ? "ds-grid-item filmImageHover" : "ds-grid-item filmImage"} 
+            src={props.filmImage}
+            onMouseEnter={imgHoverOn}
+            onMouseLeave={imgHoverOff}
             /></a>
             <div className="titleAndDescription">
             <div className="titleAndCategory">
-                <h1 id="filmTitleID"className="ds-grid-item filmTitle">{this.props.filmTitle}</h1>
-                <p className="filmCategories" >{this.props.filmCategories}</p>
+                <h1 id="filmTitleID"className="ds-grid-item filmTitle">{props.filmTitle}</h1>
+                <p className="filmCategories" >{props.filmCategories}</p>
             </div>
-                <p className="ds-grid-item filmExcerpt">{this.props.filmExcerpt}</p>
+                <p className="ds-grid-item filmExcerpt">{props.filmExcerpt}</p>
                 <br />
 
-                <a className={this.state.btnActive ? "ds-grid-item btnViewFilmHover" : "ds-grid-item btnViewFilm"} href={this.props.filmLink} 
-            onMouseEnter={this.btnHoverOn}
-            onMouseLeave={this.btnHoverOff}
+                <a className={btnActive ? "ds-grid-item btnViewFilmHover" : "ds-grid-item btnViewFilm"} href={props.filmLink} 
+            onMouseEnter={btnHoverOn}
+            onMouseLeave={btnHoverOff}
             >MORE INFO</a>
             </div>
             <br/>
@@ -44,8 +40,3 @@ class Post extends Component{
             </div>
         )
     }
-
-}
-
-
-export default Post; 
