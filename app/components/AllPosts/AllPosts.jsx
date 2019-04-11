@@ -17,45 +17,42 @@ export default function AllPosts(props){
     let [categoryFilterNoResults, setCategoryFilterNoResults] = useState(false)
     let [activeCategory, setActiveCategory] = useState("ALL")
     let [parentCategory, setParentCategory] = useState(null)
-
-    function getParentCategory(){
-        const { api_url, categoryToRender: categoryID } = props;
-        const trimmedURL = api_url.split("wp-json")[0];
-        axios.get(`${trimmedURL}wp-json/wp/v2/categories/${categoryID}`)
-        .then( res => {
-            setParentCategory(res.data.name)
-        })
-    }
-
-    function getCategories(){
-        const { api_url, categoryToRender: categoryID } = props;
-        const trimmedURL = api_url.split("wp-json")[0];
-        let fetchURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
-        axios.get(fetchURL)
-        .then(res => {
-            let categoryData = {1: "ALL"};
-            for(let i = 0; i < res.data.length; i++){
-                if(res.data[i].name === "Uncategorised") continue;
-                categoryData[res.data[i].id] = res.data[i].name; 
-            }
-            setCategoryData(categoryData)
-        })
-        getParentCategory();
-    }
-
-    // call API, get posts and store in state
-    function getPosts(){
-        const { api_url, categoryToRender: categoryID } = props;
-        const trimmedURL = api_url.split("wp-json")[0];
-        const fetchURL = `${trimmedURL}wp-json/wp/v2/posts?categories=${categoryID}&_embed`;
-        axios.get(fetchURL)
-        .then(res => {
-            setPostData(res.data)
-            setDataFetched(true)
-        })
-    }    
+   
     // Essentially a componentDidMount()
     useEffect(() => {
+        const { api_url, categoryToRender: categoryID } = props;
+        const trimmedURL = api_url.split("wp-json")[0];
+        
+        const getParentURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
+        const getChildrenURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
+        const getPostsUrl = `${trimmedURL}wp-json/wp/v2/posts?categories=${categoryID}&_embed`
+
+        axios.all([
+            axios.get(getParentURL),
+            axios.get(getChildrenURL),
+            axios.get(getPostsUrl)
+        ])
+        .then(axios.spread((parentRes, childrenRes, postsRes) => {
+            if(parentRes){
+                setParentCategory(parentRes.data.name)
+            }
+            if(childrenRes){
+                let categoryData = {1: "ALL"};
+                for(let i = 0; i < childrenRes.data.length; i++){
+                    if(childrenRes.data[i].name === "Uncategorised") continue;
+                    categoryData[childrenRes.data[i].id] = childrenRes.data[i].name; 
+                }
+            setCategoryData(categoryData)
+            }
+            if(postsRes){
+                setPostData(postsRes.data)
+                setDataFetched(true)
+            }
+        }))
+
+
+
+        // add event listner to clear searchbox input
         document.addEventListener("keydown", (event) =>{
             if(event.key === "Escape"){
                 handleClearSearchBox(event);
@@ -125,8 +122,6 @@ export default function AllPosts(props){
     }
 
     if(!dataFetched && props.categoryToRender !== null){
-        getCategories();
-        getPosts();
         return(<div><Loading /></div>)
     }
 
