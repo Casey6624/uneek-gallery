@@ -31,7 +31,6 @@ export default class Shortcode extends Component {
       this.fetchWP.get( 'adminTitle' )
       .then((json) => {
         if(json.value){
-          console.log(json)
           this.setState({galleryHeader: json.value})
         }else{
           console.log(json)
@@ -42,8 +41,7 @@ export default class Shortcode extends Component {
       this.fetchWP.get( 'adminCategory' )
       .then((json) =>{
         if(json.value){
-          this.setState({categoryToRender: json.value}),
-          console.log(json)
+          this.setState({categoryToRender: json.value, loadingPage: false})
         }else{
           console.log(json)
           this.setState({APIErrors: "Please set a parent category in the settings menu!"})
@@ -52,8 +50,6 @@ export default class Shortcode extends Component {
       )
       .catch((err) => this.setState({ APIErrors: err }))
     }
-
-    componentDidMount(){this.setState({ loadingPage: false })}
     
   render() {
 

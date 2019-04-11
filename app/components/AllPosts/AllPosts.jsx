@@ -64,9 +64,6 @@ export default class AllPosts extends Component{
             if(event.key === "Escape"){
                 this.handleClearSearchBox(event);
             }
-            /* if(event.key === "ArrowLeft" || event.key === "ArrowRight"){
-                this.arrowKeyCategoryHandler(event);
-            } */
         } )
     }
     // attached to the escape key using componentDidMount()
@@ -142,7 +139,7 @@ render(){
         return(
             <div className="noPostsFound">
                 <h1 >No Posts Found! :(</h1>
-                <p>Please visit <strong>Settings/Uneek Gallery</strong> from the dashboard and check the category selected.</p>
+                <p>Please visit <strong>Settings/Uneek Gallery</strong> from the dashboard and check the parent category is correct.</p>
             </div>
         )
     }

@@ -33,7 +33,7 @@ width: auto;
     .ds-grid {
         display: grid;
         grid-template-columns: repeat(1, auto);
-        grid-template-rows: repeat(4, 200px);
+        grid-template-rows: repeat(4, 1fr);
     
         grid-template-rows: 1fr;
         padding: 0;
@@ -91,52 +91,33 @@ width: auto;
     }
 }
 
-@media only screen and (max-width: 600px){
-    .filmListHeader{
-        font-size: 55px !important;
-        font-family: 'Amatic SC', cursive;
-    }
-}
-
 @media only screen and (max-width: 500px){
-    .filmListHeader{
-        font-size: 40px !important;
-        font-family: 'Open Sans Condensed', sans-serif;
-    }
     .titleAndCategory{
-        display: grid !important;
+        display: table !important;
+        justify-content: center;
         text-align: center;
+        margin: 0 auto;
     }
     .filmCategories{
-        width: 50%;
-        text-align: center;
-        margin-left: 22px !important;
+        display: table;
+        margin: 0 auto;
     }
     #filmTitleID{
         text-align: left;
     }
-}
-
-@media only screen and (max-width: 550px){
-    #uneekGallerySearchBar{
-        font-size: 18px !important;
+    .ds-grid{
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        text-align: center;
+        margin: auto;
     }
-}
-@media only screen and (max-width: 515px){
-.categoryLinks{
-    display: grid !important;
-}
-
-}
-@media only screen and (max-width: 400px){
-
-.filmExcerpt{
-    font-size: 28px;
 }
 
 #filmTitleID{
-    font-size: 35px;
-}
+    font-size: 4rem;
 }
 
 
@@ -262,10 +243,6 @@ width: auto;
     align-items: center;
 }
 
-.categoryLinksDropDown{
-    visibility: hidden;
-}
-
 .categoryLinkActive{
     background: #fff195;
     font-family: 'Open Sans Condensed', sans-serif;
@@ -323,7 +300,8 @@ width: auto;
 .categoryLinksDropDown{
     font-family: 'Open Sans Condensed', sans-serif;
     color: #1e1e1e;
-    font-size: 22px;
+    font-size: 1rem;
+    visibility: hidden;
     border-radius: 15px;
 }
 
