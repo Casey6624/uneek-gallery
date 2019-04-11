@@ -147,9 +147,7 @@ render(){
     if(this.state.filterValue !== ""){
         return(
             <React.Fragment>
-                <div className="uneekGallerySearchBarContainer">
-                    <SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler} />
-                </div>
+                <SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler} />
             {/* filtered film results */}
             {this.filterItems().map((post, index) => <Post
                 key={this.filterItems()[index].id === undefined ? null : this.filterItems()[index].id}
@@ -167,9 +165,7 @@ render(){
     if(this.state.categoryFilter !== null){
         return(
             <React.Fragment>
-                <div className="uneekGallerySearchBarContainer">
                     <SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler}/>
-                </div>
                 <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
             {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
                 <a className={this.state.activeCategory == this.state.categoryData[key] ? "categoryLinkActive" : "categoryLink"} onClick={this.categoryFilterHandler} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}
@@ -196,7 +192,7 @@ render(){
 
     return(
         <React.Fragment>
-        {<div className="uneekGallerySearchBarContainer"><SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler}/></div>}
+        {<SearchBar focus value={this.state.filterValue} onChange={this.filterChangeHandler}/>}
         <div className="categoryLinks"><h3 id="filterByStageLabel">FILTER BY STAGE: </h3>
             {this.state.categoryData === null ? null : Object.keys(this.state.categoryData).map((key, index) => 
                 <a className={this.state.activeCategory == this.state.categoryData[key] ? "categoryLinkActive" : "categoryLink"} onClick={this.categoryFilterHandler} key={this.state.categoryData[key]} name={this.state.categoryData[key]}>{this.state.categoryData[key]}</a>)}

@@ -85,10 +85,6 @@ width: auto;
         font-size: 16px !important;
         font-family: 'Open Sans Condensed', sans-serif;
     }
-    #uneekGallerySearchBar{
-        width: 100%;
-        padding: 0 10px 0 10px;
-    }
 }
 
 @media only screen and (max-width: 500px){
@@ -290,10 +286,18 @@ width: auto;
 }
 
 #uneekGallerySearchBar{
-    padding: 12px 20px;
-    font-size: 22px;
     font-family: 'Open Sans Condensed', sans-serif;
-    animation: searchbarFrames 1s ease-in-out 0s forwards 1;
+    font-size: 1.2rem;
+    animation: searchbarFrames 1s cubic-bezier(0.71, 0.5, 0, 1.23) 0s forwards 1;
+    text-align: center;
+    padding: 1rem;
+    color: #f2f2f2;
+    background: transparent;
+    border: none;
+    border-bottom: #fff195 0.2rem dashed !important;
+}
+
+#uneekGallerySearchBar::placeholder{
     color: #1e1e1e;
 }
 
@@ -333,14 +337,11 @@ width: auto;
 @keyframes searchbarFrames{
     from{
         opacity: 0.2;
-        border-radius: 0px;
         width: 20%;
     }
     to{
         opacity: 1;
         width: 75%;
-        border-radius: 25px;
-        background: #f2f2f2;
         transform: 300ms cubic-bezier(0, 0.47, 0.32, 1.97);
     }
 }
