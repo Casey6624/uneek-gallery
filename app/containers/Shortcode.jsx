@@ -1,59 +1,54 @@
-import React, { Component } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AllPosts from "../components/AllPosts/AllPosts";
 import fetchWP from "../utils/fetchWP";
 import Loading from "../components/Loading/Loading";
 
 
-export default class Shortcode extends Component {
 
-  constructor(props){
-    super(props);
+export default function Shortcode(props){
 
-    this.fetchWP = new fetchWP({
-      restURL: this.props.wpObject.api_url,
-      restNonce: this.props.wpObject.api_nonce,
-    });
+  fetchWP = new fetchWP({
+    restURL: props.wpObject.api_url,
+    restNonce: props.wpObject.api_nonce,
+  });
 
-    this.state = {
-      galleryHeader: null,
-      categoryToRender: null,
-      showSearchBar: null,
-      APIErrors: "",
-      loadingPage: true
-    }
 
-      this.getSettings();
+  const [galleryHeader, setGalleryHeader] = useState(null)
+  const [categoryToRender, setCategoryToRender] = useState(null)
+  const [showSearchBar, setShowSearchBar] = useState(null)
+  const [APIErrors, setAPIErrors] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
 
-  } 
-
-  getSettings = () => {
-      this.fetchWP.get( 'adminTitle' )
+  function getSettings(){
+      fetchWP.get( 'adminTitle' )
       .then((json) => {
         if(json.value){
-          this.setState({galleryHeader: json.value})
+          setGalleryHeader(json.value)
         }else{
           console.log(json)
         }
       }
       )
-      .catch((err) => this.setState({APIErrors: err}))
-      this.fetchWP.get( 'adminCategory' )
+      .catch((err) => setAPIErrors(err))
+
+      fetchWP.get( 'adminCategory' )
       .then((json) =>{
         if(json.value){
-          this.setState({categoryToRender: json.value, loadingPage: false})
+          setCategoryToRender(json.value)
+          setIsLoading(false)
         }else{
           console.log(json)
-          this.setState({APIErrors: "Please set a parent category in the settings menu!"})
+          setAPIErrors("Please set a parent category in the settings menu!")
         }
       }
       )
-      .catch((err) => this.setState({ APIErrors: err }))
+      .catch((err) => setAPIErrors(err))
     }
     
-  render() {
 
-    if(this.state.loadingPage){
+    if(isLoading){
       return(
         <div>
           <Loading />
@@ -63,23 +58,15 @@ export default class Shortcode extends Component {
 
     return (
       <div className="uneek-container">
-        <h1 className="filmListHeader" >{this.state.galleryHeader}</h1>
-        {this.state.APIErrors === "" ? null : <p id="parentCatError"> <span id="parentCatErrorHighlight">ERROR:</span> {this.state.APIErrors}</p>}
+        <h1 className="filmListHeader" >{galleryHeader}</h1>
+        {APIErrors === "" ? null : <p id="parentCatError"> <span id="parentCatErrorHighlight">ERROR:</span> {APIErrors}</p>}
         <AllPosts 
-        api_url={this.props.wpObject.api_url}
-        api_nonce={this.props.wpObject.api_nonce} 
-        categoryToRender={this.state.categoryToRender}
-        showSearchBar={this.state.showSearchBar}
-        showCategoryError={this.state.showCategoryError}
+        api_url={props.wpObject.api_url}
+        api_nonce={props.wpObject.api_nonce} 
+        categoryToRender={categoryToRender}
+        showSearchBar={showSearchBar}
+        showCategoryError={showCategoryError}
         />
       </div>
     );
   }
-
-
-  
-}
-
-Shortcode.propTypes = {
-  wpObject: PropTypes.object
-};
