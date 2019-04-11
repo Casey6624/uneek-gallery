@@ -21,7 +21,7 @@ export default function AllPosts(props){
     // Essentially a componentDidMount()
     useEffect(() => {
         const { api_url, categoryToRender: categoryID } = props;
-        const trimmedURL = api_url.split("wp-json")[0];
+        const [trimmedURL] = api_url.split("wp-json");
         
         const getParentURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
         const getChildrenURL = `${trimmedURL}wp-json/wp/v2/categories?parent=${categoryID}`
