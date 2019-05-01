@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: repeat(3, auto);
     grid-template-rows: repeat(1, 200px);
-
+    align-items: center;
     grid-template-rows: 1fr;
     padding: 0;
     grid-template-areas: 
@@ -26,7 +26,8 @@
 }
 
 .filmImage, .filmImageHover{
-width: auto;
+width: 30vw;
+height: 30vw;
 }
 
 @media only screen and (max-width: 1200px){
@@ -46,7 +47,8 @@ width: auto;
     }
     .filmImage, .filmImageHover{
         margin: 0 auto !important;
-        width: 80%;
+        width: auto !important;
+        height: auto !important;
     }
     .filmExcerpt{
         font-size: 22px !important;
@@ -96,7 +98,7 @@ width: auto;
     }
     .filmCategories{
         display: table;
-        margin: 0 auto;
+        margin: 1rem auto !important;
     }
     #filmTitleID{
         text-align: left;
@@ -164,6 +166,7 @@ width: auto;
     font-size: 32px;
     line-height: 1.5;
     padding-top: 0px;
+    text-align: left;
     text-transform: uppercase;
     font-family: 'Open Sans Condensed', sans-serif;
 }
@@ -305,8 +308,9 @@ width: auto;
     font-family: 'Open Sans Condensed', sans-serif;
     color: #1e1e1e;
     font-size: 1rem;
+    padding: 1rem;
     visibility: hidden;
-    border-radius: 15px;
+    border-radius: 1rem;
 }
 
 /*    END OF Searchbar  */
