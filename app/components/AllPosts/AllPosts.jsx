@@ -92,8 +92,7 @@ export default function AllPosts(props) {
 
     // TEXT SEARCH
     function filterItems() {
-        let sortedFilteredPosts = postData.filter(({ title }) => title.rendered.includes(filterValue));
-        return sortedFilteredPosts;
+        return postData.filter(({ title }) => title.toUpperCase().includes(filterValue));
     }
     // CATEGORY <a> TAGS </a> SEARCH
     function categoryFilterItems() {
